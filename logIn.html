@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Log - in</title>
+	<link rel="stylesheet" href="./css/styles.css">
+	<script defer src="./js/script.js"></script>
+</head>
+
+<body>
+	<main>
+		<section class="register">
+			<section class="header">
+				<img src="./images/brand-page.svg" alt="Logo de la marca">
+				<h2>Iniciar sesión</h2>
+				<div class="separator">
+					<span>o</span>
+				</div>
+			</section>
+			<form method="post" action="./database/users.php">
+				<input type="hidden" name="action" value="login">
+				<div class="form-group">
+					<input type="text" name="name" placeholder="Ingresa tu Alias" required>
+				</div>
+				<div class="form-group password-container">
+					<input type="password" name="password" id="register-password" placeholder="Contraseña" required>
+					<span class="toggle-password">
+						<img src="./images/hide-password.svg" alt="Toggle Password Visibility">
+					</span>
+				</div>
+				<button class="btn-submit" type="submit">Inicia sesión</button>
+			</form>
+			<div class="footer">
+				<p>¿No tienes una cuenta?</p>
+				<a class="register-link" href="./register.html">Regístrate</a>
+			</footer>
+		</section>
+	</main>
+</body>
+
+</html>
