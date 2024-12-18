@@ -20,19 +20,7 @@
 </head>
 
 <body>
-	<header>
-		<nav>
-			<ul>
-				<li><a href="./index.php">inicio</a></li>
-				<li><a href="./products.php">productos</a></li>
-			</ul>
-			<img src="./images/brand-page.svg" alt="brand-page" />
-			<ul>
-				<li class="shopping-cart"><a href="./cart.php"><img src="./images/shopping-cart.svg" alt="shopping-cart" /></a></li>
-				<li class="active"><a href="./contact.php">contacto</a></li>
-			</ul>
-		</nav>
-	</header>
+	<?php require_once('./components/header.php') ?>
 	<main>
 		<section class="hero">
 			<section class="header">

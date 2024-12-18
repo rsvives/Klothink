@@ -21,19 +21,7 @@
 </head>
 
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="./index.php">inicio</a></li>
-                <li class="active"><a href="./products.php">productos</a></li>
-            </ul>
-            <img src="./images/brand-page.svg" alt="brand-page" />
-            <ul>
-                <li class="shopping-cart"><img src="./images/shopping-cart.svg" alt="shopping-cart" /></li>
-                <li><a href="./contact.php">contacto</a></li>
-            </ul>
-        </nav>
-    </header>
+    <?php require_once('./components/header.php') ?>
     <main>
         <?php
         if (isset($_GET['id']) && !empty($_GET['id'])) {
