@@ -90,7 +90,9 @@
         case 'contact.php':
             activeButton = navButtons[2]
             break;
+        default:
+            break;
     }
 
-    activeButton.classList.add('active')
+    if (activeButton) activeButton.classList.add('active')
 </script>

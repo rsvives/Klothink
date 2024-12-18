@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="./css/styles.css" />
     <script defer src="./js/script.js"></script>
     <?php include './database/db.php'; ?>
+    <script defer src="./js/product-details.js"></script>
 </head>
 
 <body>
@@ -98,7 +99,7 @@
                                 <div class="inputs" id="color-picker">
                                     <?php $colours = explode(',', $product['colours']); ?>
                                     <?php foreach ($colours as $colour): ?>
-                                        <input value="<?= htmlspecialchars($colour) ?>" class="color" type="checkbox" style="background: <?= htmlspecialchars($colour) ?>;">
+                                        <input value="<?= htmlspecialchars($colour) ?>" class="color-input" name="selected-color" type="radio" style="background: <?= htmlspecialchars($colour) ?>;">
                                     <?php endforeach; ?>
                                 </div>
                             </div>
@@ -107,11 +108,11 @@
                                 <div class="inputs">
                                     <?php $sizes = explode(',', $product['sizes']) ?>
                                     <?php foreach ($sizes as $size): ?>
-                                        <section id="<?= htmlspecialchars($size) ?>">
-                                            <section id="<?= htmlspecialchars($size) ?>">
-                                                <input type="checkbox" id="<?= htmlspecialchars($size) ?>">
-                                                <label for="<?= htmlspecialchars($size) ?>"><?= htmlspecialchars($size) ?></label>
-                                            </section>
+                                        <section id="sizes-inputs">
+
+                                            <input type="radio" class="size-input" id="<?= htmlspecialchars($size) ?>-size" value="<?= htmlspecialchars($size) ?>" name="selected-size">
+                                            <label for="<?= htmlspecialchars($size) ?>-size"><?= htmlspecialchars($size) ?></label>
+
                                         </section>
                                     <?php endforeach ?>
                                 </div>
@@ -442,6 +443,8 @@
             </div>
         </section>
     </footer>
+
+
 </body>
 
 </html>

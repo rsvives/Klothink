@@ -24,6 +24,8 @@
     <?php require_once './database/db.php'; ?>
     <?php require_once './database/products.php'; ?>
     <?php require_once './database/collections.php'; ?>
+
+    <!-- comprobar si hay parametros de filtrado en la url, si los hay, modificar los datos a mostrar -->
 </head>
 
 <body>
