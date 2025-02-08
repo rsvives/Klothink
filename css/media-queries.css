@@ -1,0 +1,120 @@
+@media screen and (min-width: 768px) {
+    main > section.hero {
+        flex-direction: row;
+
+        section.header:nth-of-type(2),
+        section.header:last-child {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        section.header > section.title {
+            flex-direction: row;
+
+            h3 {
+                display: block;
+            }
+        }
+
+        section.news {
+            flex-direction: row;
+
+            a {
+                margin: auto;
+
+                button {
+                    border-radius: 10em;
+                    background: var(--gray-light);
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: var(--spacing-medium);
+                    border: none;
+                    font-size: var(--font-size-base);
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    main > section.collections > div.collection > div.clothes {
+        display: flex;
+        flex-wrap: wrap;
+        overflow: hidden;
+        flex-direction: row;
+
+        a {
+            margin: 0;
+
+            article {
+                width: 350px;
+            }
+        }
+
+        &:nth-child(2) {
+            flex-wrap: nowrap;
+            overflow-x: scroll;
+        }
+    }
+
+    footer {
+        section.main {
+            flex-direction: row;
+
+            section.header > div.header > div.social-media-icons {
+                display: flex;
+                order: 1;
+            }
+
+            section.menu {
+                display: block;
+                display: flex;
+                gap: 50px;
+            }
+        }
+
+        section.footer-policies {
+            flex-direction: row;
+
+            div.policies-content {
+                flex-direction: row;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    main > section.hero {
+        flex-direction: row;
+
+        section.header {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        section.news {
+            flex-direction: row;
+        }
+
+        section.collections > div.collection > div.clothes {
+            display: flex;
+            flex-wrap: wrap;
+            overflow: hidden;
+            flex-direction: row;
+
+            a {
+                margin: 0;
+
+                article {
+                    width: 350px;
+                }
+            }
+        }
+    }
+
+    footer {
+        section.main {
+            flex-direction: row;
+        }
+    }
+}
