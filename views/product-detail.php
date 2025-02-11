@@ -1,7 +1,9 @@
 <?php require_once('../components/head.php') ?>
 
 <body>
+
     <?php require_once('../components/header.php') ?>
+
     <main>
         <?php
         if (isset($_GET['id'])) {
@@ -22,7 +24,8 @@
                 <div class="product">
                     <?php if (!empty($productImagesUrls)): ?>
                         <figure>
-                            <img src="<?= htmlspecialchars($productImagesUrls[0]) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
+                            <!-- Main image with an ID for easy targeting -->
+                            <img id="main-product-image" src="<?= htmlspecialchars($productImagesUrls[0]) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
                         </figure>
                         <div class="images">
                             <?php foreach ($productImagesUrls as $imageUrl): ?>
@@ -37,7 +40,7 @@
                                             </form>
                                         </div>
                                     <?php endif; ?>
-                                    <img src="<?= htmlspecialchars($imageUrl); ?>" alt="Imagen del producto">
+                                    <img class="product-thumbnail" src="<?= htmlspecialchars($imageUrl); ?>" alt="Imagen del producto">
                                 </figure>
                             <?php endforeach; ?>
                         </div>
@@ -138,6 +141,20 @@
         <?php require_once '../components/faq.php'; ?>
     </main>
     <?php require_once '../components/footer.php'; ?>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const thumbnails = document.querySelectorAll('.product-thumbnail');
+            const mainImage = document.getElementById('main-product-image');
+
+            thumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', function() {
+                    mainImage.src = this.src;
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>

@@ -228,16 +228,17 @@ main {
                 border: solid 1px #f1f1f3;
                 border-radius: 14px;
 
-                details summary {
+                details > summary {
+                    list-style: none;
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
                     cursor: pointer;
+                    &::after {
+                        content: url('../images/open-icon.svg');
+                    }
                 }
 
-                details summary::after {
-                    content: url('../images/open-icon.svg');
-                }
 
                 details[open] summary::after {
                     content: url('../images/close-icon.svg');
@@ -259,7 +260,9 @@ main {
             }
         }
     }
-
+iframe{
+    height: 100vh;
+}
     div.filters {
         border: 1px solid #f1f1f3;
         border-radius: 100px;
@@ -292,7 +295,6 @@ main {
             align-items: flex-end;
         }
     }
-
     section.collections>div.collection {
         display: flex;
         flex-direction: column;

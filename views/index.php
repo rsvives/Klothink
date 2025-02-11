@@ -3,6 +3,7 @@
 <body>
     <?php require_once('../components/header.php'); ?>
     <main id="detail">
+
         <section class="hero">
             <section class="header">
                 <section class="title">
