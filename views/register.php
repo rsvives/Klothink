@@ -8,16 +8,14 @@
 			<div class="main">
 				<section class="header">
 					<img src="../images/brand-page.svg" alt="Logo de la marca">
-					<h2>Registrate</h2>
+					<h2>Crear una cuenta</h2>
 					<button>
 						<p>Registrate con google</p>
-						<img src="../images\google-icon.png" alt="google-icon">
+						<img src="../images\google-icon.svg" alt="google-icon">
 					</button>
 					<div class="separator">
 						<span>o</span>
 					</div>
-
-
 				</section>
 				<form method="post" action="../database/users.php">
 					<input type="hidden" name="action" value="register">

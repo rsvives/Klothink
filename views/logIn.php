@@ -10,6 +10,10 @@
 				<section class="header">
 					<img src="../images/brand-page.svg" alt="Logo de la marca">
 					<h2>Iniciar sesión</h2>
+					<button>
+						<p>Registrate con google</p>
+						<img src="../images\google-icon.svg" alt="google-icon">
+					</button>
 					<div class="separator">
 						<span>o</span>
 					</div>

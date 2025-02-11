@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="es">
-
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,10 +12,10 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet" />
-	<link rel="stylesheet" href="../css/styles.css" />
-	<script defer src="../js/script.js"></script>
-	<!-- <?php session_name('Klothink'); ?>
-	<?php session_start(); ?> -->
+	<link rel="stylesheet" href="../css/styles.css?v=2" />
+	<script defer src="../js/script.js?v=2"></script>
+	<?php session_name('Klothink'); ?>
+	<?php session_start(); ?>
 	<?php
 	if (session_status() == PHP_SESSION_NONE) {
 		session_start();

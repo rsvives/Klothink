@@ -4,7 +4,8 @@
     box-sizing: border-box;
 }
 
-body, html {
+body,
+html {
     scrollbar-width: none;
 
     div.loader {
@@ -126,7 +127,7 @@ header {
                     align-items: center;
                     gap: 10px;
 
-                    .profile-photo > img {
+                    .profile-photo>img {
                         border-radius: 50%;
                         width: 40px;
                         height: 40px;
@@ -292,7 +293,7 @@ main {
         }
     }
 
-    section.collections > div.collection {
+    section.collections>div.collection {
         display: flex;
         flex-direction: column;
         gap: 3em;
@@ -345,15 +346,19 @@ main {
                     gap: 10px;
                     z-index: 10;
 
-                    form > button.delete-button {
-                        background-color: #D1D1D6; /* Gris suave similar a Apple */
+                    form>button.delete-button {
+                        background-color: #D1D1D6;
+                        /* Gris suave similar a Apple */
                         color: white;
                         border-radius: 50%;
                         padding: 5px;
-                        font-size: 18px; /* Un poco más pequeño que el tamaño original */
+                        font-size: 18px;
+                        /* Un poco más pequeño que el tamaño original */
                         border: none;
-                        width: 24px; /* Botón pequeño */
-                        height: 24px; /* Botón pequeño */
+                        width: 24px;
+                        /* Botón pequeño */
+                        height: 24px;
+                        /* Botón pequeño */
                         display: flex;
                         justify-content: center;
                         align-items: center;
@@ -654,7 +659,7 @@ main {
                         }
                     }
 
-                    figure > img {
+                    figure>img {
                         border-radius: 8px;
                         width: 64px;
                     }
@@ -702,7 +707,7 @@ main {
                         display: flex;
                         gap: 12em;
 
-                        div.title > h2 {
+                        div.title>h2 {
                             color: #686677;
                             font-size: 22px;
 
@@ -802,22 +807,25 @@ main {
     }
 
     section.product-detail {
-        form{
+        form {
             width: 100%;
             display: flex;
+
             div.product {
-                width: 50%;    
+                width: 50%;
+                position: relative;
+
                 figure {
                     img {
-                        width: 40%;
-                        height: 40%;
-                        object-fit: contain;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
                         position: absolute;
                         background: #f7f7f8;
                         border-radius: 20px;
                     }
                 }
-    
+
                 div.images {
                     display: flex;
                     flex-direction: column;
@@ -828,49 +836,50 @@ main {
                     border-radius: 1em;
                     background: #ffffff;
                     position: absolute;
-    
+
                     figure {
                         img {
                             object-fit: fill;
                             position: relative;
                             width: 3em;
+                            height: 3em;
                             border-radius: 0.5em;
                         }
                     }
                 }
             }
-    
+
             div.details {
                 width: 50%;
                 display: flex;
                 flex-direction: column;
                 gap: 1em;
                 padding: 1em;
-    
+
                 div.header {
                     display: flex;
                     width: fit-content;
-    
+
                     div.title {
                         display: flex;
                         flex-direction: column;
                         gap: 55px;
-    
+
                         h2 {
                             display: flex;
                             width: 13em;
                             text-transform: capitalize;
                         }
                     }
-    
+
                     h3.price {
                         font-size: 30px;
                     }
-    
+
                     div.buttons {
                         display: flex;
                         gap: 5px;
-    
+
                         button {
                             border-radius: 32px;
                             font-size: 18px;
@@ -881,7 +890,7 @@ main {
                             width: 10.5em;
                             height: 3em;
                             border: none;
-    
+
                             &.buy {
                                 background: #262626;
                                 color: #f1f1f3;
@@ -889,7 +898,7 @@ main {
                                 gap: 10px;
                                 padding: 16px 10px;
                             }
-    
+
                             &.cart {
                                 display: flex;
                                 gap: 10px;
@@ -899,42 +908,43 @@ main {
                         }
                     }
                 }
-    
+
                 div.blocks {
                     display: flex;
                     flex-direction: column;
                     gap: 20px;
-    
+
                     div.block {
                         border-radius: 2em;
                         border: 1px solid #f1f1f3;
                         padding: 30px;
                         display: flex;
-    
+
                         div.header {
                             display: grid;
                             grid-template-columns: 2fr 2fr;
                             gap: 3em;
-    
+
                             div.matherial {
                                 display: flex;
                                 flex-direction: column;
                                 gap: 1em;
-    
-                                p {
+
+                                input {
                                     font-size: 18px;
+                                    border: none;
                                 }
-    
+
                                 h3::first-letter {
                                     text-transform: capitalize;
                                 }
                             }
-    
+
                             div.colour {
                                 display: flex;
                                 flex-direction: column;
                                 gap: 1em;
-    
+
                                 div.inputs {
                                     border: 1px solid #f1f1f3;
                                     width: fit-content;
@@ -944,50 +954,49 @@ main {
                                     flex-wrap: wrap;
                                     padding: 10px;
                                     border-radius: 100px;
-    
+
                                     input {
                                         border-radius: 100%;
                                         width: 24px;
                                         appearance: none;
-                                    }
-    
-                                    input:checked {
-                                        background: white;
-                                    }
-    
-                                    input#green {
-                                        background: #62613a;
+
+                                        &:checked {
+                                            background: white;
+                                        }
                                     }
                                 }
                             }
-    
+
                             div.fit {
                                 display: flex;
                                 flex-direction: column;
                                 gap: 1em;
-    
+
                                 h3::first-letter {
                                     text-transform: capitalize;
                                 }
-    
-                                p::first-letter {
-                                    text-transform: capitalize;
+
+                                input {
+                                    border: none;
+                                    &::first-letter{
+                                        text-transform: capitalize;
+                                    }
                                 }
                             }
-    
+
                             div.sizes {
                                 display: flex;
                                 flex-direction: column;
                                 gap: 1em;
-    
+
                                 h3:first-letter {
                                     text-transform: capitalize;
                                 }
-    
+
                                 div.inputs {
                                     display: flex;
                                     gap: 10px;
-    
+
                                     section {
                                         label {
                                             display: flex;
@@ -1000,11 +1009,11 @@ main {
                                             background-color: #f7f7f8;
                                             border-radius: 4px;
                                         }
-    
+
                                         input {
                                             display: none;
-    
-                                            &:checked + label {
+
+                                            &:checked+label {
                                                 background-color: #000;
                                                 color: #fff;
                                             }
@@ -1014,26 +1023,30 @@ main {
                             }
                         }
                     }
-    
+
                     div.block {
                         display: flex;
                         flex-direction: column;
                         gap: 20px;
-    
+
                         h3::first-letter {
                             text-transform: uppercase;
                         }
-    
+
                         ul {
                             margin-left: 2em;
                             display: flex;
                             flex-direction: column;
                             gap: 14px;
-    
+
                             li {
                                 color: #656567;
+                                input{
+                                    border: none;
+                                    width: 100%;
+                                }
                             }
-    
+
                             li::first-letter {
                                 text-transform: capitalize;
                             }
@@ -1042,10 +1055,10 @@ main {
                 }
             }
         }
-    
-        }
 
-   
+    }
+
+
     section.reviews,
     section.faq {
         display: flex;
@@ -1069,7 +1082,7 @@ main {
                         flex-direction: column;
                     }
 
-                    div.profile > img {
+                    div.profile>img {
                         border-radius: 50%;
                     }
                 }
@@ -1134,7 +1147,7 @@ main {
         .actions {
             margin-top: 20px;
 
-            a > button {
+            a>button {
                 border: none;
                 display: inline-block;
                 text-decoration: none;
@@ -1155,13 +1168,12 @@ main {
 
     section.register {
         display: flex;
-        gap: 20em;
+        gap: 5em;
         padding: 20px;
         text-align: center;
         align-items: center;
-        `+ç
-        
-        .main{
+
+        .main {
             width: 800px;
         }
 
@@ -1194,15 +1206,25 @@ main {
                     font-size: 14px;
                 }
             }
-            button{
+
+            button {
                 display: flex;
                 align-items: center;
+                justify-content: center;
                 background: white;
                 border: 1px solid #CBCAD7;
                 border-radius: 10px;
-                padding: 20px;
-                font-weight: bold;
-                font-style: 16px;
+                padding: 20px 12px 18px 20px;
+                gap: 12px;
+                p{
+                    margin: 0;
+                    font-weight: bold;
+                    font-size: 16px;
+                }
+                img{
+                    width: fit-content;
+                    margin: 0;
+                }
             }
         }
 
@@ -1437,7 +1459,7 @@ section.footer-policies {
 }
 
 @media screen and (min-width: 1024px) {
-    main > section.hero {
+    main>section.hero {
         flex-direction: row;
 
         section.header:nth-of-type(2),
@@ -1446,7 +1468,7 @@ section.footer-policies {
             justify-content: space-between;
         }
 
-        section.header > section.title {
+        section.header>section.title {
             flex-direction: row;
 
             h3 {
@@ -1475,17 +1497,17 @@ section.footer-policies {
         }
     }
 
-    main > section.hero:nth-child(2),
-    main > section.hero:nth-child(3) {
+    main>section.hero:nth-child(2),
+    main>section.hero:nth-child(3) {
         flex-direction: column;
     }
 
-    main > .filters-container {
+    main>.filters-container {
         display: flex;
         justify-content: space-between;
     }
 
-    main > section.collections > div.collection > div.clothes {
+    main>section.collections>div.collection>div.clothes {
         display: flex;
         flex-wrap: wrap;
         overflow: hidden;
@@ -1509,7 +1531,7 @@ section.footer-policies {
         section.main {
             flex-direction: row;
 
-            section.header > div.header > div.social-media-icons {
+            section.header>div.header>div.social-media-icons {
                 display: flex;
                 order: 1;
             }

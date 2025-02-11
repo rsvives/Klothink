@@ -1,51 +1,55 @@
 <?php
 require_once '../database/db.php';
+require_once '../database/functions.php';
 /**
  * Registra un nuevo usuario en la base de datos.
  */
 function registerUser($alias, $email, $password)
 {
-    $connection = connectDatabase();
-    if (!$connection) {
-        handleError("No se pudo conectar a la base de datos. Inténtalo más tarde.");
-    }
+    $conn = connectDatabase() or handleError("No se pudo conectar a la base de datos.");
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         handleError("El correo electrónico ingresado no es válido.");
     }
 
-    $checkQuery = $connection->prepare("SELECT alias, email FROM user WHERE alias = ? OR email = ?");
-    $checkQuery->bind_param("ss", $alias, $email);
-    $checkQuery->execute();
-    $checkQuery->store_result();
+    $stmtCheck = $conn->prepare("SELECT alias, email FROM user WHERE alias = ? OR email = ?");
+    if (!$stmtCheck) {
+        handleError("Error al preparar la consulta de verificación.");
+    }
+    $stmtCheck->bind_param("ss", $alias, $email);
+    $stmtCheck->execute();
+    $stmtCheck->store_result();
 
-    if ($checkQuery->num_rows > 0) {
-        $checkQuery->bind_result($existingAlias, $existingEmail);
-        $checkQuery->fetch();
-        $checkQuery->close();
-        $connection->close();
+    if ($stmtCheck->num_rows > 0) {
+        $stmtCheck->bind_result($existingAlias, $existingEmail);
+        $stmtCheck->fetch();
+        $stmtCheck->close();
+        $conn->close();
 
         if ($existingAlias === $alias) {
-            handleError("El alias '$alias' ya está en uso. Elige otro.");
+            handleError("El alias '$alias' ya está en uso.");
         }
         if ($existingEmail === $email) {
-            handleError("El correo '$email' ya está registrado. Usa otro.");
+            handleError("El correo '$email' ya está registrado.");
         }
     }
 
-    $checkQuery->close();
+    $stmtCheck->close();
     $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $insertUserQuery = $connection->prepare("INSERT INTO user (alias, email, password) VALUES (?, ?, ?)");
-    $insertUserQuery->bind_param("sss", $alias, $email, $encryptedPassword);
+    $stmtInsert = $conn->prepare("INSERT INTO user (alias, email, password) VALUES (?, ?, ?)");
+    if (!$stmtInsert) {
+        handleError("Error al preparar la inserción de usuario.");
+    }
+    $stmtInsert->bind_param("sss", $alias, $email, $encryptedPassword);
 
-    if ($insertUserQuery->execute()) {
+    if ($stmtInsert->execute()) {
         loginUser($alias, $password);
     } else {
-        handleError("Error al registrar el usuario: " . $insertUserQuery->error);
+        handleError("Error al registrar el usuario: " . $stmtInsert->error);
     }
 
-    $insertUserQuery->close();
-    $connection->close();
+    $stmtInsert->close();
+    $conn->close();
 }
 
 /**
@@ -53,39 +57,45 @@ function registerUser($alias, $email, $password)
  */
 function getUserRole($alias)
 {
-    $connection = connectDatabase();
-    if (!$connection) {
+    $conn = connectDatabase();
+    if (!$conn) {
         handleError("No se pudo conectar a la base de datos.");
     }
+    $stmt = $conn->prepare("SELECT role FROM user WHERE alias = ?");
+    if (!$stmt) {
+        handleError("Error al preparar la consulta del rol de usuario.");
+    }
+    $stmt->bind_param("s", $alias);
+    $stmt->execute();
+    $stmt->bind_result($role);
+    $stmt->fetch();
 
-    $query = $connection->prepare("SELECT role FROM user WHERE alias = ?");
-    $query->bind_param("s", $alias);
-    $query->execute();
-    $query->bind_result($role);
-    $query->fetch();
-
-    $query->close();
-    $connection->close();
-
+    $stmt->close();
+    $conn->close();
     return $role;
 }
+
 
 /**
  * Inicia sesión de un usuario utilizando su alias y contraseña.
  */
 function loginUser($alias, $password)
 {
-    $connection = connectDatabase();
-    if (!$connection) {
+    $conn = connectDatabase();
+
+    if (!$conn) {
         handleError("No se pudo conectar a la base de datos.");
     }
 
-    $checkQuery = $connection->prepare("SELECT password FROM user WHERE alias = ?");
-    $checkQuery->bind_param("s", $alias);
-    $checkQuery->execute();
-    $checkQuery->bind_result($hashedPassword);
+    $stmtCheck = $conn->prepare("SELECT password FROM user WHERE alias = ?");
+    if (!$stmtCheck) {
+        handleError("Error al preparar la consulta de inicio de sesión.");
+    }
+    $stmtCheck->bind_param("s", $alias);
+    $stmtCheck->execute();
+    $stmtCheck->bind_result($hashedPassword);
 
-    if ($checkQuery->fetch() && password_verify($password, $hashedPassword)) {
+    if ($stmtCheck->fetch() && password_verify($password, $hashedPassword)) {
         session_start();
         $_SESSION['user_alias'] = $alias;
         $_SESSION['user_role'] = getUserRole($alias);
@@ -95,32 +105,10 @@ function loginUser($alias, $password)
         handleError("Alias o contraseña incorrectos.");
     }
 
-    $checkQuery->close();
-    $connection->close();
+    $stmtCheck->close();
+    $conn->close();
 }
 
-/**
- * Procesa las acciones del formulario de registro e inicio de sesión.
- */
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_POST['action'] ?? '';
-
-    if ($action === 'register') {
-        if (!empty($_POST['name']) && !empty($_POST['email']) && !empty($_POST['password'])) {
-            registerUser($_POST['name'], $_POST['email'], $_POST['password']);
-        } else {
-            handleError("Por favor, completa todos los campos para el registro.");
-        }
-    } elseif ($action === 'login') {
-        if (!empty($_POST['name']) && !empty($_POST['password'])) {
-            loginUser($_POST['name'], $_POST['password']);
-        } else {
-            handleError("Por favor, completa todos los campos para iniciar sesión.");
-        }
-    } else {
-        handleError("Acción no válida.");
-    }
-}
 
 /**
  * Obtiene todos los usuarios de la base de datos.
@@ -167,3 +155,29 @@ function updateUsers($id, $role)
     $connection->close();
     return true;
 }
+/**
+ * Procesa las acciones del formulario de registro e inicio de sesión.
+ */
+function actions()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $action = $_POST['action'] ?? '';
+
+        if ($action === 'register') {
+            if (!empty($_POST['name']) && !empty($_POST['email']) && !empty($_POST['password'])) {
+                registerUser($_POST['name'], $_POST['email'], $_POST['password']);
+            } else {
+                handleError("Por favor, completa todos los campos para el registro.");
+            }
+        } elseif ($action === 'login') {
+            if (!empty($_POST['name']) && !empty($_POST['password'])) {
+                loginUser($_POST['name'], $_POST['password']);
+            } else {
+                handleError("Por favor, completa todos los campos para iniciar sesión.");
+            }
+        } else {
+            handleError("Acción no válida.");
+        }
+    }
+}
+actions();

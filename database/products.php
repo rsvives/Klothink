@@ -158,47 +158,6 @@ function getUserIdByAlias($alias)
 }
 
 /**
- * Añade un producto al carrito del usuario basado en el alias.
- *
- * @param int $idProduct El ID del producto que se va a añadir.
- */
-function addProductToCart($idProduct)
-{
-	try {
-		session_start();
-		if (!isset($_SESSION['user_alias'])) {
-			handleError('No hay sesión activa. Inicia sesión para continuar.');
-		}
-
-		$userAlias = $_SESSION['user_alias'];
-		$idUser = getUserIdByAlias($userAlias);
-
-		if (!$idUser) {
-			handleError('Usuario no encontrado. Verifica tu sesión e inténtalo nuevamente.');
-		}
-
-		$conn = connectDatabase();
-		$query = 'INSERT INTO `order` (idUser, idProduct) VALUES (?, ?)';
-		$stmt = $conn->prepare($query);
-
-		if (!$stmt) {
-			handleError('Error al preparar la consulta para añadir el producto al carrito.');
-		}
-
-		$stmt->bind_param('ii', $idUser, $idProduct);
-		if (!$stmt->execute()) {
-			handleError('No se pudo añadir el producto al carrito. Inténtalo nuevamente.');
-		}
-
-		$stmt->close();
-		$conn->close();
-		header('Location: http://localhost/klothink/views/products.php');
-		exit();
-	} catch (Exception $e) {
-		handleError('Ocurrió un error inesperado: ' . $e->getMessage());
-	}
-}
-/**
  * Maneja las acciones del formulario.
  */
 function actions()
@@ -214,13 +173,6 @@ function actions()
 		}
 		if ($action === 'create_product') {
 			createProduct($_POST['productName'], $_POST['productPrice'], $_POST['productMaterial'], $_POST['productFit'], $_POST['productGender'], $_POST['productCharacteristics'], $_POST['productColours'], $_POST['productImages'], $_POST['productSizes'], $_POST['productCollection'], $_POST['idCategory']);
-		}
-		if ($action === 'add_to_cart') {
-			if (isset($_POST['idProduct']) && is_numeric($_POST['idProduct'])) {
-				addProductToCart($_POST['idProduct']);
-			} else {
-				handleError('El ID del producto no es válido.');
-			}
 		}
 	}
 }

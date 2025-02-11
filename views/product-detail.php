@@ -100,7 +100,7 @@
                                         <?php $sizes = explode(',', $product['sizes']); ?>
                                         <?php foreach ($sizes as $size): ?>
                                             <section id="<?= htmlspecialchars($size) ?>">
-                                                <input type="checkbox" id="<?= htmlspecialchars($size) ?>-size">
+                                                <input type="checkbox" id="<?= htmlspecialchars($size) ?>-size" name="size">
                                                 <label for="<?= htmlspecialchars($size) ?>-size"><?= htmlspecialchars($size) ?></label>
                                             </section>
                                         <?php endforeach; ?>
