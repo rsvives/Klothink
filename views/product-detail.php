@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="es">
 <?php require_once('../components/head.php') ?>
 
 <body>
@@ -103,7 +105,7 @@
                                         <?php $sizes = explode(',', $product['sizes']); ?>
                                         <?php foreach ($sizes as $size): ?>
                                             <section id="<?= htmlspecialchars($size) ?>">
-                                                <input type="checkbox" id="<?= htmlspecialchars($size) ?>-size" name="size">
+                                                <input type="radio" id="<?= htmlspecialchars($size) ?>-size" name="size">
                                                 <label for="<?= htmlspecialchars($size) ?>-size"><?= htmlspecialchars($size) ?></label>
                                             </section>
                                         <?php endforeach; ?>
@@ -156,5 +158,6 @@
     </script>
 
 </body>
+
 
 </html>

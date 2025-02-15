@@ -18,6 +18,7 @@
 		<form action="../database/products.php" method="post">
 			<input type="hidden" name="action" value="add_to_cart">
 			<input type="hidden" name="idProduct" value="<?= $product['id'] ?>">
+			<input type="hidden" name="UserAlias" value="<?= $_SESSION['user_alias'] ? $_SESSION['user_alias'] : '' ?>">
 			<button type="submit" class="shopping-cart">
 				<img src="../images/shopping-cart.svg" alt="shopping-cart">
 			</button>

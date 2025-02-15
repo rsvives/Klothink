@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="es">
 <?php require_once('../components/head.php'); ?>
 
 <body>
@@ -83,5 +85,6 @@
     </main>
     <?php require_once '../components/footer.php'; ?>
 </body>
+
 
 </html>

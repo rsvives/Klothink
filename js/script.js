@@ -55,27 +55,9 @@ function changeImage() {
         image.src = '../images/hide-password.svg';
     }
 }
-let togglePassword = document.querySelector('.toggle-password');
-togglePassword.click = changeImage;
-
-/**
- *
- * Funcion que agrega productos al carrito visualizando detalles en el DOM.
- *
- * @param {number|string} productId - ID del producto que se quiere agregar.
- * @description
- * La funcion agrega el ID del producto al arreglo `productsCart` y actualiza el DOM
- * mostrando el producto en el carrito. La estructura incluye la imagen,
- * título, cantidad y precio del producto.
- */
-function addProductToCart(productId) {
-    let productContainer = document.getElementsByClassName('products')
-  if (!productContainer) {
-      alert("¡Contenedor de productos no encontrado!")
-  } else {
-      alert('Has seleccionado el producto' + productId)
-      let
-  }
+let togglePassword = document.getElementById('togglePassword');
+if (togglePassword) {
+    togglePassword.onclick = changeImage; 
 }
 /**
  *  Muestra un cuadro de diálogo de confirmación para eliminar un producto y, si el usuario lo confirma,

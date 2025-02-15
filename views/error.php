@@ -1,4 +1,7 @@
+<!DOCTYPE html>
+<html lang="es">
 <?php require_once('../components/head.php') ?>
+
 
 
 <body>
@@ -15,5 +18,7 @@
 		</section>
 	</main>
 </body>
+
+</html>
 
 </html>

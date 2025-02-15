@@ -168,7 +168,7 @@ main {
 
                 h3 {
                     width: fit-content;
-                    color: #98989a;
+                    color: #111;
                     text-transform: uppercase;
                     font-size: 14px;
                     display: flex;
@@ -1175,7 +1175,13 @@ iframe{
         text-align: center;
         align-items: center;
 
+        img{
+            display: none;
+        }
         .main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             width: 800px;
         }
 
@@ -1183,6 +1189,7 @@ iframe{
             display: flex;
             flex-direction: column;
             gap: 24px;
+            width: 100%;
 
             img {
                 width: 64px;
@@ -1552,5 +1559,8 @@ section.footer-policies {
                 flex-direction: row;
             }
         }
+    }
+    main > section.register > img{
+        display: block;
     }
 }
