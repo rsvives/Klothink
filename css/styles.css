@@ -74,19 +74,6 @@ header {
                     background: #ffd400;
                 }
 
-                &.dropdown {
-                    border: none;
-                    list-style: none;
-                    margin: 0;
-                    padding: 0;
-                    margin-left: 1em;
-                    display: flex;
-
-                    h1 {
-                        width: 0;
-                    }
-                }
-
                 .profile {
                     border-radius: 0;
                 }

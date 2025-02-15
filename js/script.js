@@ -92,7 +92,38 @@ function closePopup() {
     form.style.display = 'none';
 }
 document.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') { 
+    if (event.key === 'Escape') { 
         closePopup(); 
     }
 });
+document.addEventListener('DOMContentLoaded', initDropdown);
+
+function initDropdown() {
+    var dropdownTrigger = document.querySelector('.dropdown');
+    var dropdownMenu = document.querySelector('.dropdown-menu');
+
+    if (!dropdownTrigger || !dropdownMenu) return;
+
+    dropdownTrigger.addEventListener('click', toggleDropdown);
+    document.addEventListener('click', function(e) {
+        if (!dropdownTrigger.contains(e.target) && !dropdownMenu.contains(e.target)) {
+            closeDropdown();
+        }
+    });
+}
+
+function toggleDropdown() {
+    let dropdownMenu = document.querySelector('.dropdown-menu');
+    let title = document.querySelector('.dropdown');
+
+    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    title.classList.toggle('active');
+}
+
+function closeDropdown() {
+    let dropdownMenu = document.querySelector('.dropdown-menu');
+    let title = document.querySelector('.dropdown');
+
+    dropdownMenu.style.display = 'none';
+    title.classList.remove('active');
+}
