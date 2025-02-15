@@ -10,7 +10,7 @@
 			<img src="../images\background.png" alt="background">
 			<div class="main">
 				<section class="header">
-					<img src="../images/brand-page.svg" alt="Logo de la marca">
+					<img src="../images/brand-page.svg" alt="brand-page">
 					<h2>Crear una cuenta</h2>
 					<button>
 						<p>Registrate con google</p>

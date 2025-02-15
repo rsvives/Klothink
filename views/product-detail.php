@@ -26,7 +26,6 @@
                 <div class="product">
                     <?php if (!empty($productImagesUrls)): ?>
                         <figure>
-                            <!-- Main image with an ID for easy targeting -->
                             <img id="main-product-image" src="<?= htmlspecialchars($productImagesUrls[0]) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
                         </figure>
                         <div class="images">

@@ -14,10 +14,9 @@
 	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet" />
 	<link rel="stylesheet" href="../css/styles.css?v=2" />
 	<script defer src="../js/script.js?v=2"></script>
-	<?php session_name('Klothink'); ?>
-	<?php session_start(); ?>
 	<?php
 	if (session_status() == PHP_SESSION_NONE) {
+		session_name('Klothink');
 		session_start();
 	}
 	if (file_exists('../database/db.php') | file_exists('../database/products.php') | file_exists('../database/collections.php')) {

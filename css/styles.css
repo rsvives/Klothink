@@ -115,9 +115,6 @@ header {
                     }
                 }
 
-                .title:hover .dropdown-menu {
-                    display: block;
-                }
 
                 a {
                     width: fit-content;

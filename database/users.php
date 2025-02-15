@@ -96,11 +96,12 @@ function loginUser($alias, $password)
     $stmtCheck->bind_result($hashedPassword);
 
     if ($stmtCheck->fetch() && password_verify($password, $hashedPassword)) {
+        session_name('Klothink');
         session_start();
         $_SESSION['user_alias'] = $alias;
         $_SESSION['user_role'] = getUserRole($alias);
         header("Location: ../views/index.php");
-        exit();
+        die();
     } else {
         handleError("Alias o contraseña incorrectos.");
     }
