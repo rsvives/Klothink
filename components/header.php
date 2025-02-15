@@ -142,7 +142,7 @@
             }
 
             .burger-icon {
-                display: inline-block;
+                display: none;
             }
         }
     </style>
@@ -154,17 +154,15 @@
 
     <header>
         <nav class="nav-desktop">
-            <div class="logo-burger">
-                <div class="burger-icon" id="burger-icon">
-                    <img src="../images/burger-icon.svg" alt="Menú">
-                </div>
-                <a href="./index.php"><img src="../images/brand-page.svg" alt="Página principal"></a>
-
-            </div>
-
             <ul>
-                <li class="nav-button active"><a href="../views/index.php">Inicio</a></li>
-                <li class="nav-button"><a href="../views/products.php">Productos</a></li>
+                <div class="logo-burger">
+                    <div class="burger-icon" id="burger-icon">
+                        <img src="../images/burger-icon.svg" alt="Menú">
+                    </div>
+                    <a href="./index.php"><img src="../images/brand-page.svg" alt="Página principal"></a>
+
+                    <li class="nav-button active"><a href="../views/index.php">Inicio</a></li>
+                    <li class="nav-button"><a href="../views/products.php">Productos</a></li>
             </ul>
 
             <ul>
