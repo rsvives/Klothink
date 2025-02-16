@@ -45,7 +45,10 @@
 	</main>
 	<?php require_once '../components/footer.php'; ?>
 </body>
-
-</html>
+<script>
+	window.onload = function() {
+		window.scrollTo(0, 700);
+	};
+</script>
 
 </html>

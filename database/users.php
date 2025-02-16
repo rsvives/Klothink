@@ -157,6 +157,34 @@ function updateUsers($id, $role)
     return true;
 }
 /**
+ * Obtiene la foto de perfil de un usuario y la guarda en la sesión.
+ *
+ * @param string $alias El alias del usuario.
+ * @return string|null La imagen de perfil si existe, o null si no tiene una.
+ */
+function obtenerFotoUsuario($alias)
+{
+
+    $conn = connectDatabase();
+    $foto = null;
+
+    if ($stmt = $conn->prepare("SELECT image FROM user WHERE alias = ?")) {
+        $stmt->bind_param("s", $alias);
+        $stmt->execute();
+        $stmt->bind_result($image);
+
+        if ($stmt->fetch() && !empty($image)) {
+            $_SESSION['user_photo'] = $image;
+            $foto = $image;
+        }
+
+        $stmt->close();
+    }
+
+    $conn->close();
+}
+
+/**
  * Procesa las acciones del formulario de registro e inicio de sesión.
  */
 function actions()

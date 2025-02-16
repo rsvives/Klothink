@@ -156,53 +156,6 @@ function getUserIdByAlias($alias)
 		return null;
 	}
 }
-
-/**
- * Agrega un producto al carrito creando un pedido y vinculando el producto a ese pedido.
- *
- * Esta función se encarga de conectar a la base de datos, insertar un nuevo registro en la
- * tabla `order` con estado "en proceso", y luego insertar el producto en la tabla
- * `product_order` utilizando el ID del pedido recién creado.
- *
- * @param int    $idProduct El ID del producto a agregar.
- * @param string $UserAlias El alias del usuario, utilizado para obtener su ID.
- *
- * @return string Mensaje indicando el resultado de la operación.
- */
-function addProductToCart($idProduct, $UserAlias)
-{
-	$conn = connectDatabase();
-
-	$idUser = getUserIdByAlias($UserAlias);
-	if (!$idUser) {
-		return "Error: Usuario no encontrado.";
-	}
-
-	$query = "INSERT INTO `order` (status, date, total, idUser) VALUES ('en proceso', NOW(), ?, ?)";
-	$stmt = $conn->prepare($query);
-
-	$total = 5;
-
-	$stmt->bind_param("di", $total, $idUser);
-	$stmt->execute();
-
-	$idOrder = $conn->insert_id;
-	$stmt->close();
-
-	$query = "INSERT INTO product_order (cantidad, idOrder, idProduct) VALUES (?, ?, ?)";
-	$stmt = $conn->prepare($query);
-
-	$cantidad = 1;
-
-	$stmt->bind_param("iii", $cantidad, $idOrder, $idProduct);
-	$stmt->execute();
-
-	$stmt->close();
-	$conn->close();
-
-	return "Producto agregado al carrito correctamente.";
-}
-
 /**
  * Maneja las acciones del formulario.
  */
@@ -221,11 +174,6 @@ function actions()
 			createProduct($_POST['productName'], $_POST['productPrice'], $_POST['productMaterial'], $_POST['productFit'], $_POST['productGender'], $_POST['productCharacteristics'], $_POST['productColours'], $_POST['productImages'], $_POST['productSizes'], $_POST['productCollection'], $_POST['idCategory']);
 		} else {
 			handleError('Completa todos los campos requeridos.');
-		}
-		if ($action === 'add_to_cart') {
-			addProductToCart($_POST['idProduct'], $_POST['UserAlias']);
-		} else {
-			handleError('El ID del producto no es válido o el usuario no exsite.');
 		}
 	}
 }

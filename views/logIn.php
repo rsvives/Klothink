@@ -15,7 +15,7 @@
 					<h2>Iniciar sesión</h2>
 					<button>
 						<p>Registrate con google</p>
-						<img src="../images\google-icon.svg" alt="google-icon">
+						<img src="../images/google-icon.svg" alt="google-icon">
 					</button>
 					<div class="separator">
 						<span>o</span>
@@ -43,6 +43,10 @@
 	</main>
 	<?php require_once '../components/footer.php'; ?>
 </body>
-
+<script>
+	window.onload = function() {
+		window.scrollTo(0, 700);
+	};
+</script>
 
 </html>

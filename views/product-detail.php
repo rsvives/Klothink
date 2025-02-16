@@ -14,11 +14,11 @@
                 $productImagesUrls = explode(',', $product['images']);
             } else {
                 handleError('Producto no encontrado.');
-                exit;
+                die();
             }
         } else {
             handleError('ID inválido.');
-            exit;
+            die();
         }
         ?>
         <section class="product-detail">
@@ -60,9 +60,9 @@
                                 <p>Comprar ahora</p>
                                 <img src="../images/buy-white-icon.svg" alt="buy-icon" />
                             </button>
-                            <button type="submit" id="add-to-cart">
+                            <button type="submit" class="shopping-cart">
                                 <p>Añadir al carrito</p>
-                                <img src="../images/cart-icon.svg" alt="cart-icon">
+                                <img src="../images/shopping-cart.svg" alt="shopping-cart">
                             </button>
                         </div>
                     </div>
