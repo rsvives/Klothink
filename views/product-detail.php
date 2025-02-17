@@ -22,7 +22,7 @@
         }
         ?>
         <section class="product-detail">
-            <form action="../database/products.php" method="post">
+            <form action="../database/products.php" method="post" id="product_detail_form">
                 <div class="product">
                     <?php if (!empty($productImagesUrls)): ?>
                         <figure>
@@ -31,7 +31,7 @@
                         <div class="images">
                             <?php foreach ($productImagesUrls as $imageUrl): ?>
                                 <figure>
-                                    <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
+                                    <!-- <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                                         <div class="action-buttons">
                                             <form method="post" action="../database/edit-product.php" class="delete-button" onsubmit="return confirmDelete(<?= htmlspecialchars($product['id']); ?>, '<?= htmlspecialchars($product['name']); ?>')">
                                                 <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['id']); ?>">
@@ -40,7 +40,7 @@
                                                 </button>
                                             </form>
                                         </div>
-                                    <?php endif; ?>
+                                    <?php endif; ?> -->
                                     <img class="product-thumbnail" src="<?= htmlspecialchars($imageUrl); ?>" alt="Imagen del producto">
                                 </figure>
                             <?php endforeach; ?>
@@ -81,7 +81,7 @@
                                 </div>
                                 <div class="fit">
                                     <h3>Fit</h3>
-                                    <input type="hidden" name="id" value="<?= htmlspecialchars($product['id']); ?>">
+                                    <!-- <input type="hidden" name="id" value="<?= htmlspecialchars($product['id']); ?>"> -->
                                     <input type="text" name="fit" value="<?= htmlspecialchars($product['fit']); ?>" class="overlay-input" readonly required>
                                     <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                                         <button type="submit">
@@ -102,9 +102,9 @@
                                     <h3>Tallas</h3>
                                     <div class="inputs">
                                         <?php $sizes = explode(',', $product['sizes']); ?>
-                                        <?php foreach ($sizes as $size): ?>
+                                        <?php foreach ($sizes as $key => $size): ?>
                                             <section id="<?= htmlspecialchars($size) ?>">
-                                                <input type="radio" id="<?= htmlspecialchars($size) ?>-size" name="size">
+                                                <input type="radio" id="<?= htmlspecialchars($size) ?>-size" name="size" value="<?= $size ?>" <?= $key == 0 ? 'required' : '' ?>>
                                                 <label for="<?= htmlspecialchars($size) ?>-size"><?= htmlspecialchars($size) ?></label>
                                             </section>
                                         <?php endforeach; ?>
@@ -154,6 +154,26 @@
                 });
             });
         });
+
+        let addToCartForm = document.getElementById('product_detail_form')
+
+        addToCartForm.onsubmit = (event) => {
+            event.preventDefault()
+
+            let product = {}
+            let productForm = new FormData(event.target)
+            console.log('añadiendo a carrito', productForm)
+
+            for (const [clave, valor] of productForm.entries()) {
+                product[clave] = valor
+            }
+            console.log(product)
+            //TO-DO:
+            //sacar el carrito del localstorage (devuelve un string, hay que parsearlo para convertirlo en un array/objeto)
+            //añadir el producto al carrito 
+            //volver a convertir todo en string y volver a almacenarlo en el localstorage
+
+        }
     </script>
 
 </body>

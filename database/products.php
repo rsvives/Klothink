@@ -163,17 +163,27 @@ function actions()
 {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$action = $_POST['action'] ?? '';
-		if ($action === 'delete_product') {
-			if (isset($_POST['idProduct']) && is_numeric($_POST['idProduct'])) {
-				deleteProductById($_POST['idProduct']);
-			} else {
-				handleError('El ID del producto no es válido.');
-			}
-		}
-		if ($action === 'create_product') {
-			createProduct($_POST['productName'], $_POST['productPrice'], $_POST['productMaterial'], $_POST['productFit'], $_POST['productGender'], $_POST['productCharacteristics'], $_POST['productColours'], $_POST['productImages'], $_POST['productSizes'], $_POST['productCollection'], $_POST['idCategory']);
-		} else {
-			handleError('Completa todos los campos requeridos.');
+
+		//TODO: validar user role para 
+		switch ($action) {
+			case 'delete_product':
+				if (isset($_POST['idProduct']) && is_numeric($_POST['idProduct'])) {
+					deleteProductById($_POST['idProduct']);
+				} else {
+					handleError('El ID del producto no es válido.');
+				}
+				break;
+
+			case 'create_product':
+				if (isset($_POST['productName'], $_POST['productPrice'], $_POST['productMaterial'], $_POST['productFit'], $_POST['productGender'], $_POST['productCharacteristics'], $_POST['productColours'], $_POST['productImages'], $_POST['productSizes'], $_POST['productCollection'], $_POST['idCategory'])) {
+					createProduct($_POST['productName'], $_POST['productPrice'], $_POST['productMaterial'], $_POST['productFit'], $_POST['productGender'], $_POST['productCharacteristics'], $_POST['productColours'], $_POST['productImages'], $_POST['productSizes'], $_POST['productCollection'], $_POST['idCategory']);
+				} else {
+					handleError('Completa todos los campos requeridos.');
+				}
+				break;
+			case 'add_to_cart':
+				echo 'producto añadido';
+				break;
 		}
 	}
 }
