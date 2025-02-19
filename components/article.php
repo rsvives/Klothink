@@ -1,5 +1,5 @@
 <article class="<?= htmlspecialchars($product['gender'] === 'men' ? 'men' : ($product['gender'] === 'women' ? 'women' : 'unisex')); ?> <?= htmlspecialchars($collection['name']); ?>">
-	<?php if ($_SESSION['user_role'] === 'admin'): ?>
+	<?php if ($_SESSION['user_role'] === 'Administrador'): ?>
 		<div class="action-buttons">
 			<form method="post" action="../database/products.php" class="delete-button" onsubmit="confirmDelete(event,<?= htmlspecialchars($product['id']); ?>, '<?= htmlspecialchars($product['name']); ?>')">
 				<input type="hidden" name="action" value="delete_product">
@@ -15,14 +15,9 @@
 		<a href="./product-detail.php?id=<?= htmlspecialchars($product['id']); ?>">
 			<img src="<?= htmlspecialchars($productsImagesUrls[0]); ?>" alt="<?= htmlspecialchars($product['name']); ?>">
 		</a>
-		<form action="../database/products.php" method="post">
-			<input type="hidden" name="action" value="add_to_cart">
-			<input type="hidden" name="idProduct" value="<?= $product['id'] ?>">
-			<input type="hidden" name="UserAlias" value="<?= $_SESSION['user_alias'] ? $_SESSION['user_alias'] : '' ?>">
-			<button type="submit" class="shopping-cart">
-				<img src="../images/shopping-cart.svg" alt="shopping-cart">
-			</button>
-		</form>
+		<button type="submit" class="shopping-cart">
+			<img src="../images/shopping-cart.svg" alt="shopping-cart">
+		</button>
 	</figure>
 	<figcaption>
 		<a href="./product-detail.php?id=<?= htmlspecialchars($product['id']); ?>">

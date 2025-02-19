@@ -22,7 +22,7 @@
         }
         ?>
         <section class="product-detail">
-            <form action="../database/products.php" method="post">
+            <form action="" method="" onsubmit="addProductToCart()" id="add-product-form">
                 <div class="product">
                     <?php if (!empty($productImagesUrls)): ?>
                         <figure>
@@ -31,16 +31,6 @@
                         <div class="images">
                             <?php foreach ($productImagesUrls as $imageUrl): ?>
                                 <figure>
-                                    <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
-                                        <div class="action-buttons">
-                                            <form method="post" action="../database/edit-product.php" class="delete-button" onsubmit="return confirmDelete(<?= htmlspecialchars($product['id']); ?>, '<?= htmlspecialchars($product['name']); ?>')">
-                                                <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['id']); ?>">
-                                                <button type="submit" class="delete-button" title="Eliminar imagen">
-                                                    <img src="../images/Minus.png" alt="Eliminar imagen">
-                                                </button>
-                                            </form>
-                                        </div>
-                                    <?php endif; ?>
                                     <img class="product-thumbnail" src="<?= htmlspecialchars($imageUrl); ?>" alt="Imagen del producto">
                                 </figure>
                             <?php endforeach; ?>
@@ -62,7 +52,7 @@
                             </button>
                             <button type="submit" class="shopping-cart">
                                 <p>Añadir al carrito</p>
-                                <img src="../images/shopping-cart.svg" alt="shopping-cart">
+                                <img src=" ../images/shopping-cart.svg" alt="shopping-cart">
                             </button>
                         </div>
                     </div>
@@ -94,7 +84,7 @@
                                     <div class="inputs" id="color-picker">
                                         <?php $colours = explode(',', $product['colours']); ?>
                                         <?php foreach ($colours as $colour): ?>
-                                            <input value="<?= htmlspecialchars($colour) ?>" class="color" type="radio" style="background: <?= htmlspecialchars($colour) ?>;">
+                                            <input value="<?= htmlspecialchars($colour) ?>" class="color" type="checkbox" style="background: <?= htmlspecialchars($colour) ?>;">
                                         <?php endforeach; ?>
                                     </div>
                                 </div>
@@ -104,7 +94,7 @@
                                         <?php $sizes = explode(',', $product['sizes']); ?>
                                         <?php foreach ($sizes as $size): ?>
                                             <section id="<?= htmlspecialchars($size) ?>">
-                                                <input type="radio" id="<?= htmlspecialchars($size) ?>-size" name="size">
+                                                <input type="radio" id="<?= htmlspecialchars($size) ?>-size" name="size" value="<?= htmlspecialchars($size) ?>">
                                                 <label for="<?= htmlspecialchars($size) ?>-size"><?= htmlspecialchars($size) ?></label>
                                             </section>
                                         <?php endforeach; ?>

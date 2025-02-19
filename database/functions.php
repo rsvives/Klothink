@@ -7,6 +7,6 @@
  */
 function handleError($errorMessage)
 {
-    header('Location: /klothink/views/error.php?error=' . urlencode($errorMessage));
+    header('Location: .../views/error.php?error=' . urlencode($errorMessage));
     exit();
 }

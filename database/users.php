@@ -162,11 +162,10 @@ function updateUsers($id, $role)
  * @param string $alias El alias del usuario.
  * @return string|null La imagen de perfil si existe, o null si no tiene una.
  */
-function obtenerFotoUsuario($alias)
+function getProfileImageUser($alias)
 {
 
     $conn = connectDatabase();
-    $foto = null;
 
     if ($stmt = $conn->prepare("SELECT image FROM user WHERE alias = ?")) {
         $stmt->bind_param("s", $alias);
@@ -175,7 +174,6 @@ function obtenerFotoUsuario($alias)
 
         if ($stmt->fetch() && !empty($image)) {
             $_SESSION['user_photo'] = $image;
-            $foto = $image;
         }
 
         $stmt->close();
@@ -192,21 +190,28 @@ function actions()
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $action = $_POST['action'] ?? '';
 
-        if ($action === 'register') {
-            if (!empty($_POST['name']) && !empty($_POST['email']) && !empty($_POST['password'])) {
-                registerUser($_POST['name'], $_POST['email'], $_POST['password']);
-            } else {
-                handleError("Por favor, completa todos los campos para el registro.");
-            }
-        } elseif ($action === 'login') {
-            if (!empty($_POST['name']) && !empty($_POST['password'])) {
-                loginUser($_POST['name'], $_POST['password']);
-            } else {
-                handleError("Por favor, completa todos los campos para iniciar sesión.");
-            }
-        } else {
-            handleError("Acción no válida.");
+        switch ($action) {
+            case 'register':
+                if (!empty($_POST['name']) && !empty($_POST['email']) && !empty($_POST['password'])) {
+                    registerUser($_POST['name'], $_POST['email'], $_POST['password']);
+                } else {
+                    handleError("Por favor, completa todos los campos para el registro.");
+                }
+                break;
+
+            case 'login':
+                if (!empty($_POST['name']) && !empty($_POST['password'])) {
+                    loginUser($_POST['name'], $_POST['password']);
+                } else {
+                    handleError("Por favor, completa todos los campos para iniciar sesión.");
+                }
+                break;
+
+            default:
+                handleError("Acción no válida.");
+                break;
         }
     }
 }
+
 actions();
