@@ -49,13 +49,13 @@
                                 <?php include '../components/article.php'; ?>
                             <?php endif; ?>
                         <?php endforeach; ?>
-                        <?php if ($_SESSION['user_role'] === 'admin') : ?>
+                        <?php if ($_SESSION['user_role'] === 'Administrador') : ?>
                             <article class="add-product-container">
                                 <button id="add-button" onclick="openPopup()">➕</button>
-                                <section id="popupForm">
+                                <section id="popupForm" style="display:none">
                                     <div class="windowPopUp">
                                         <button class="close-form" onclick="closePopup()">X</button>
-                                        <form method="post" action="../database/products.php">
+                                        <form action="../database/products.php" method="post">
                                             <input type="hidden" name="action" value="create_product">
                                             <input type="text" id="productName" placeholder="Nombre del Producto" />
                                             <input type="text" id="productPrice" placeholder="Precio del Producto" />

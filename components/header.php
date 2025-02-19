@@ -28,7 +28,7 @@
                         <li class="item"><a href="../views/profile.php">👤 Ver Perfil</a></li>
                         <li class="item"><a href="../views/orders.php">📦 Mis Pedidos</a></li>
 
-                        <?php if ($_SESSION['user_role'] === 'administrador'): ?>
+                        <?php if ($_SESSION['user_role'] === 'Administrador'): ?>
                             <li class="item"><a href="../views/dashboard.php">📊 Dashboard</a></li>
                             <li class="item"><a href="../views/user-management.php">👥 Gestión de Usuarios</a></li>
                         <?php endif; ?>

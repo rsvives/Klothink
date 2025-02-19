@@ -62,7 +62,7 @@
                             </button>
                             <button type="submit" class="shopping-cart">
                                 <p>Añadir al carrito</p>
-                                <img src="../images/shopping-cart.svg" alt="shopping-cart">
+                                <img src=" ../images/shopping-cart.svg" alt="shopping-cart">
                             </button>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                                     <div class="inputs" id="color-picker">
                                         <?php $colours = explode(',', $product['colours']); ?>
                                         <?php foreach ($colours as $colour): ?>
-                                            <input value="<?= htmlspecialchars($colour) ?>" class="color" type="radio" style="background: <?= htmlspecialchars($colour) ?>;">
+                                            <input value="<?= htmlspecialchars($colour) ?>" class="color" type="checkbox" style="background: <?= htmlspecialchars($colour) ?>;">
                                         <?php endforeach; ?>
                                     </div>
                                 </div>

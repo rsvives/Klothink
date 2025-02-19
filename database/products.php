@@ -99,7 +99,7 @@ function deleteProductById($id)
  *
  * @param int $id El ID del producto que se desea añadir.
  */
-function createProduct($name, $price, $material, $fit, $gender, $characteristics, $colours, $images, $sizes, $idCollection, $idCategory)
+function createProduct($name, $price, $material, $fit, $gender, $characteristics, $colours, $images, $sizes, $idCollection)
 {
 	try {
 		$connection = connectDatabase();
@@ -107,26 +107,29 @@ function createProduct($name, $price, $material, $fit, $gender, $characteristics
 			handleError('No se pudo conectar a la base de datos. Inténtalo más tarde.');
 		}
 
-		$query = "INSERT INTO product VALUES (?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$query = "INSERT INTO product (name, price, material, fit, gender, characteristics, colours, images, sizes, idCollection) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$stmt = $connection->prepare($query);
 
 		if (!$stmt) {
-			handleError('Error al preparar la consulta para eliminar el producto.');
+			handleError('Error al preparar la consulta para insertar el producto.');
 		}
 
-		$stmt->bind_param('sdsssssssss', $name, $price, $material, $fit, $gender, $characteristics, $colours, $images, $sizes, $idCollection, $idCategory);
+		$stmt->bind_param('sdsssssssi', $name, $price, $material, $fit, $gender, $characteristics, $colours, $images, $sizes, $idCollection);
+
 		if (!$stmt->execute()) {
-			handleError('No se pudo eliminar el producto. Inténtalo nuevamente.');
+			handleError('No se pudo crear el producto indicado. Error: ' . $stmt->error);
 		}
 
 		$stmt->close();
 		$connection->close();
 		header("Location: ../views/products.php");
-		exit();
+		die();
 	} catch (Exception $e) {
 		handleError('Ocurrió un error inesperado: ' . $e->getMessage());
 	}
 }
+
 
 /**
  * Obtiene el ID del usuario por su alias.
@@ -157,13 +160,12 @@ function getUserIdByAlias($alias)
 	}
 }
 /**
- * Maneja las acciones del formulario.
+ * Procesa las acciones relacionadas con productos.
  */
 function actions()
 {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$action = $_POST['action'] ?? '';
-
 		//TODO: validar user role para 
 		switch ($action) {
 			case 'delete_product':
@@ -185,6 +187,10 @@ function actions()
 				echo 'producto añadido';
 				break;
 		}
+		// } else {
+		// 	handleError('Acceso no autorizado');
+		// }
 	}
 }
+
 actions();

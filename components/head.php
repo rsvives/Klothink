@@ -14,6 +14,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet" />
 	<link rel="stylesheet" href="../css/styles.css?v=2" />
 	<script defer src="../js/script.js?v=2"></script>
+	<script defer src="../js/cart.js?v=2"></script>
 	<?php
 	if (session_status() == PHP_SESSION_NONE) {
 		session_name('Klothink');
