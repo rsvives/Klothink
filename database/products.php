@@ -166,10 +166,10 @@ function actions()
 {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$action = $_POST['action'] ?? '';
-		// if ($_SESSION['user_role'] === 'Administrador') {
+		//TODO: validar user role para 
 		switch ($action) {
 			case 'delete_product':
-				if (isset($_POST['idProduct']) & is_numeric($_POST['idProduct'])) {
+				if (isset($_POST['idProduct']) && is_numeric($_POST['idProduct'])) {
 					deleteProductById($_POST['idProduct']);
 				} else {
 					handleError('El ID del producto no es válido.');
@@ -177,26 +177,14 @@ function actions()
 				break;
 
 			case 'create_product':
-				// if (!empty($_POST['productName']) &  !empty($_POST['productPrice'])) {
-				createProduct(
-					$_POST['productName'],
-					$_POST['productPrice'],
-					$_POST['productMaterial'],
-					$_POST['productFit'],
-					$_POST['productGender'],
-					$_POST['productCharacteristics'],
-					$_POST['productColours'],
-					$_POST['productImages'],
-					$_POST['productSizes'],
-					$_POST['productCollection'],
-				);
-				// } else {
-				// 	handleError('Completa todos los campos requeridos.');
-				// }
+				if (isset($_POST['productName'], $_POST['productPrice'], $_POST['productMaterial'], $_POST['productFit'], $_POST['productGender'], $_POST['productCharacteristics'], $_POST['productColours'], $_POST['productImages'], $_POST['productSizes'], $_POST['productCollection'], $_POST['idCategory'])) {
+					createProduct($_POST['productName'], $_POST['productPrice'], $_POST['productMaterial'], $_POST['productFit'], $_POST['productGender'], $_POST['productCharacteristics'], $_POST['productColours'], $_POST['productImages'], $_POST['productSizes'], $_POST['productCollection'], $_POST['idCategory']);
+				} else {
+					handleError('Completa todos los campos requeridos.');
+				}
 				break;
-
-			default:
-				handleError("Acción no válida.");
+			case 'add_to_cart':
+				echo 'producto añadido';
 				break;
 		}
 		// } else {

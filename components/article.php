@@ -29,3 +29,13 @@
 		</div>
 	</figcaption>
 </article>
+
+<script>
+	// let addToCartForm = document.querySelector('.add_to_cart_form')
+
+	// addToCartForm.onsubmit = (event) => {
+	// 	event.preventDefault()
+	// 	console.log('hello')
+
+	// }
+</script>
