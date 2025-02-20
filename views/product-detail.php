@@ -60,7 +60,7 @@
                                 <p>Comprar ahora</p>
                                 <img src="../images/buy-white-icon.svg" alt="buy-icon" />
                             </button>
-                            <button type="submit" class="shopping-cart">
+                            <button type="submit" class="shopping-cart" id="add-product-form">
                                 <p>Añadir al carrito</p>
                                 <img src=" ../images/shopping-cart.svg" alt="shopping-cart">
                             </button>
@@ -94,7 +94,7 @@
                                     <div class="inputs" id="color-picker">
                                         <?php $colours = explode(',', $product['colours']); ?>
                                         <?php foreach ($colours as $colour): ?>
-                                            <input value="<?= htmlspecialchars($colour) ?>" class="color" type="checkbox" style="background: <?= htmlspecialchars($colour) ?>;">
+                                            <input value="<?= htmlspecialchars($colour) ?>" name="color" class="color" type="radio" style="background: <?= htmlspecialchars($colour) ?>;" required>
                                         <?php endforeach; ?>
                                     </div>
                                 </div>
@@ -160,18 +160,78 @@
         addToCartForm.onsubmit = (event) => {
             event.preventDefault()
 
-            let product = {}
-            let productForm = new FormData(event.target)
-            console.log('añadiendo a carrito', productForm)
+            let form = event.target
+            // let product = {}
+            let productForm = new FormData(form)
+            // console.log('añadiendo a carrito', productForm)
 
-            for (const [clave, valor] of productForm.entries()) {
-                product[clave] = valor
+            // for (const [clave, valor] of productForm.entries()) {
+            //     product[clave] = valor
+            // }
+            // console.log(product)
+
+            // let product = {
+            //     id: form.id.value,
+            //     size: form.size.value,
+            //     fit:form.fit.value
+            // }
+            let product = {
+                id: productForm.get('id'),
+                fit: productForm.get('fit'),
+                size: productForm.get('size'),
+                color: productForm.get('color'),
+                quantity: 1
+
             }
-            console.log(product)
+            // console.log(product)
+
             //TO-DO:
-            //sacar el carrito del localstorage (devuelve un string, hay que parsearlo para convertirlo en un array/objeto)
-            //añadir el producto al carrito 
-            //volver a convertir todo en string y volver a almacenarlo en el localstorage
+            //1. sacar el carrito del localstorage (devuelve un string, hay que parsearlo para convertirlo en un array/objeto)
+            let cart = localStorage.getItem('cart') === null ? [] : JSON.parse(localStorage.getItem('cart'))
+
+            //2. añadir el producto al carrito 
+
+
+            let found = false
+            if (cart.length === 0) {
+                cart.push(product)
+            } else {
+                for (let item of cart) {
+                    // console.log(item, product)
+                    if (item.id === product.id && item.fit === product.fit && item.size === product.size && item.color === product.color) {
+                        found = true
+                        item.quantity++
+                    }
+                }
+                if (!found) cart.push(product)
+            }
+
+
+            //más elegante:
+
+            // const foundProduct = cart.find(item => (item.id === product.id && item.fit === product.fit && item.size === product.size && item.color === product.color)) || false
+            // console.log('found', foundProduct)
+            // if (cart.length === 0 || !foundProduct) {
+            //     cart.push(product)
+            // } else {
+            //     cart = cart.map(item => {
+            //         return item.id === product.id &&
+            //             item.fit === product.fit &&
+            //             item.size === product.size &&
+            //             item.color === product.color ? {
+            //                 ...item,
+            //                 quantity: item.quantity + 1
+            //             } : item
+            //     })
+            // }
+
+            console.log(cart)
+
+            //3. volver a convertir todo en string y volver a almacenarlo en el localstorage
+            localStorage.setItem('cart', JSON.stringify(cart))
+
+
+
 
         }
     </script>
