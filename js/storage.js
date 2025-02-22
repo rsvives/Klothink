@@ -12,6 +12,7 @@ function getCartFromLocalStorage() {
  * @param {Array} cart - El carrito que se guardará en localStorage.
  */
 function saveCartToLocalStorage(cart) {
+    console.log(cart)
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
@@ -22,12 +23,12 @@ function initAddToCart() {
     let addToCartForm = document.getElementById('product_detail_form');
 
     addToCartForm.addEventListener('submit', (event) => {
-        event.preventDefault();  
+        event.preventDefault();
         let product = extractProductData(event.target);
         let cart = getCartFromLocalStorage();
         cart = addOrUpdateProductInCart(cart, product);
         saveCartToLocalStorage(cart);
-        console.log(cart);
+        // console.log(cart);
     });
 }
 document.addEventListener('DOMContentLoaded', () => {
@@ -42,17 +43,18 @@ document.addEventListener('DOMContentLoaded', () => {
 function extractProductData(form) {
     let productImage = document.getElementById('main-product-image');
     let productForm = new FormData(form);
-    let product = {}; 
+    let product = {};
 
     if (productForm.get('name')) product.name = productForm.get('name');
     if (productForm.get('price')) product.price = productForm.get('price');
     if (productForm.get('fit')) product.fit = productForm.get('fit');
+    if (productForm.get('size')) product.size = productForm.get('size');
     if (productForm.get('colour')) product.colour = productForm.get('colour');
-    
+
     if (productImage) {
         product.image = productImage.src;
-    } 
-    
+    }
+
     product.quantity = 1;
     console.log(product);
     return product;
@@ -73,7 +75,7 @@ function addOrUpdateProductInCart(cart, product) {
         for (let item of cart) {
             if (isProductEqual(item, product)) {
                 found = true;
-                item.quantity++;  
+                item.quantity++;
                 break;
             }
         }
@@ -92,10 +94,10 @@ function addOrUpdateProductInCart(cart, product) {
  */
 function isProductEqual(item, product) {
     return item.name === product.name &&
-           item.price === product.price &&
-           (!product.fit || item.fit === product.fit) &&
-           (!product.size || item.size === product.size) &&
-           (!product.colour || item.colour === product.colour);
+        item.price === product.price &&
+        (!product.fit || item.fit === product.fit) &&
+        (!product.size || item.size === product.size) &&
+        (!product.colour || item.colour === product.colour);
 }
 
 /**
@@ -117,7 +119,7 @@ function removeProductFromCart(cart, product) {
 function updateProductQuantityInCart(cart, product) {
     for (let item of cart) {
         if (isProductEqual(item, product)) {
-            item.quantity = product.quantity;  
+            item.quantity = product.quantity;
         }
     }
     return cart;
