@@ -1,0 +1,38 @@
+section.polities {
+    display: flex;
+    flex-direction: row;
+
+    section.slide-bar {
+        width: 20%;
+        height: 60%;
+        gap: 20em;
+        display: flex;
+        flex-direction: column;
+
+        div.item {
+            text-transform: capitalize;
+            gap: 16px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            background: transparent;
+            border-radius: 4px;
+            color: #ffd400;
+
+            img {
+                width: 22px;
+                height: 22px;
+            }
+        }
+
+        div.item.active {
+            background: #000;
+        }
+    }
+
+    section.content {
+        display: flex;
+        flex-direction: row;
+    }
+}

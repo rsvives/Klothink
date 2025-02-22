@@ -12,17 +12,15 @@ function getProducts()
 	try {
 		$conn = connectDatabase();
 		if (!$conn) {
-			handleError('No se pudo conectar a la base de datos. Por favor, inténtalo de nuevo más tarde.');
+			handleError('No se pudo conectar a la base de datos.');
+			return false;
 		}
+
 		$query = "SELECT * FROM product";
-		$products = $conn->query($query);
-		if ($products) {
-			return $products;
-		} else {
-			handleError('Error al obtener los productos. Inténtalo nuevamente.');
-		}
+		return $conn->query($query);
 	} catch (Exception $e) {
-		handleError('Ocurrió un error inesperado: ' . $e->getMessage());
+		handleError('Error inesperado: ' . $e->getMessage());
+		return false;
 	}
 }
 
@@ -35,32 +33,29 @@ function getProducts()
 function getProductById($id)
 {
 	try {
-		$conection = connectDatabase();
+		$conn = connectDatabase();
 		$query = 'SELECT * FROM product WHERE id = ?';
 
-		$product = $conection->prepare($query);
-		if (!$product) {
+		$stmt = $conn->prepare($query);
+		if (!$stmt) {
 			handleError('Error al preparar la consulta.');
-			return false;
+			return null;
 		}
-		$product->bind_param('i', $id);
-		$product->execute();
-		$result = $product->get_result();
+
+		$stmt->bind_param('i', $id);
+		$stmt->execute();
+		$result = $stmt->get_result();
 		$data = $result->fetch_assoc();
-		$product->close();
-		$conection->close();
-		if ($data) {
-			return $data;
-		} else {
-			handleError('No se encontró el producto con ID: ' . $id);
-			return false;
-		}
+
+		$stmt->close();
+		$conn->close();
+
+		return $data ?: null;
 	} catch (Exception $e) {
 		handleError('Error inesperado: ' . $e->getMessage());
-		return false;
+		return null;
 	}
 }
-
 
 /**
  * Elimina un producto de la base de datos mediante su ID.
@@ -70,66 +65,70 @@ function getProductById($id)
 function deleteProductById($id)
 {
 	try {
-		$connection = connectDatabase();
-		if (!$connection) {
-			handleError('No se pudo conectar a la base de datos. Inténtalo más tarde.');
+		$conn = connectDatabase();
+		if (!$conn) {
+			handleError('No se pudo conectar a la base de datos.');
+			return;
 		}
 
 		$query = "DELETE FROM product WHERE id = ?";
-		$stmt = $connection->prepare($query);
-
+		$stmt = $conn->prepare($query);
 		if (!$stmt) {
-			handleError('Error al preparar la consulta para eliminar el producto.');
+			handleError('Error al preparar la consulta.');
+			return;
 		}
 
 		$stmt->bind_param('i', $id);
 		if (!$stmt->execute()) {
-			handleError('No se pudo eliminar el producto. Inténtalo nuevamente.');
+			handleError('No se pudo eliminar el producto.');
 		}
+
 		$stmt->close();
-		$connection->close();
+		$conn->close();
+
 		header("Location: ../views/products.php");
 		exit();
 	} catch (Exception $e) {
-		handleError('Ocurrió un error inesperado: ' . $e->getMessage());
+		handleError('Error inesperado: ' . $e->getMessage());
 	}
 }
+
 /**
- * Añade un producto a la base de datos mediante los campos asociados.
- *
- * @param int $id El ID del producto que se desea añadir.
+ * Añade un producto a la base de datos.
  */
 function createProduct($name, $price, $material, $fit, $gender, $characteristics, $colours, $images, $sizes, $idCollection)
 {
 	try {
-		$connection = connectDatabase();
-		if (!$connection) {
-			handleError('No se pudo conectar a la base de datos. Inténtalo más tarde.');
+		$conn = connectDatabase();
+		if (!$conn) {
+			handleError('No se pudo conectar a la base de datos.');
+			return;
 		}
 
-		$query = "INSERT INTO product (name, price, material, fit, gender, characteristics, colours, images, sizes, idCollection) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		$stmt = $connection->prepare($query);
+		$query = "INSERT INTO product (name, characteristics, colours, fit, gender, idCollection, images, material, price, sizes) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$stmt = $conn->prepare($query);
 
 		if (!$stmt) {
-			handleError('Error al preparar la consulta para insertar el producto.');
+			handleError('Error al preparar la consulta.');
+			return;
 		}
 
-		$stmt->bind_param('sdsssssssi', $name, $price, $material, $fit, $gender, $characteristics, $colours, $images, $sizes, $idCollection);
+		$stmt->bind_param('sssssissds', $name, $material, $fit, $gender, $colours, $sizes, $price, $characteristics, $images, $idCollection);
 
 		if (!$stmt->execute()) {
-			handleError('No se pudo crear el producto indicado. Error: ' . $stmt->error);
+			handleError('No se pudo crear el producto. Error: ' . $stmt->error);
 		}
 
 		$stmt->close();
-		$connection->close();
+		$conn->close();
+
 		header("Location: ../views/products.php");
-		die();
+		exit();
 	} catch (Exception $e) {
-		handleError('Ocurrió un error inesperado: ' . $e->getMessage());
+		handleError('Error inesperado: ' . $e->getMessage());
 	}
 }
-
 
 /**
  * Obtiene el ID del usuario por su alias.
@@ -143,22 +142,26 @@ function getUserIdByAlias($alias)
 		$conn = connectDatabase();
 		$query = "SELECT id FROM user WHERE alias = ?";
 		$stmt = $conn->prepare($query);
+
 		if (!$stmt) {
-			handleError('Error al preparar la consulta para obtener el usuario.');
+			handleError('Error al preparar la consulta.');
+			return null;
 		}
+
 		$stmt->bind_param('s', $alias);
 		$stmt->execute();
 		$result = $stmt->get_result();
-		if ($result && $user = $result->fetch_assoc()) {
-			return $user['id'];
-		}
+		$user = $result->fetch_assoc();
+
 		$stmt->close();
 		$conn->close();
-		return null;
+
+		return $user['id'] ?? null;
 	} catch (Exception $e) {
 		return null;
 	}
 }
+
 /**
  * Procesa las acciones relacionadas con productos.
  */
@@ -166,30 +169,27 @@ function actions()
 {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$action = $_POST['action'] ?? '';
-		//TODO: validar user role para 
+
 		switch ($action) {
 			case 'delete_product':
-				if (isset($_POST['idProduct']) && is_numeric($_POST['idProduct'])) {
-					deleteProductById($_POST['idProduct']);
+				if (!empty($_POST['idProduct']) && is_numeric($_POST['idProduct'])) {
+					deleteProductById((int)$_POST['idProduct']);
 				} else {
 					handleError('El ID del producto no es válido.');
 				}
 				break;
 
 			case 'create_product':
-				if (isset($_POST['productName'], $_POST['productPrice'], $_POST['productMaterial'], $_POST['productFit'], $_POST['productGender'], $_POST['productCharacteristics'], $_POST['productColours'], $_POST['productImages'], $_POST['productSizes'], $_POST['productCollection'], $_POST['idCategory'])) {
-					createProduct($_POST['productName'], $_POST['productPrice'], $_POST['productMaterial'], $_POST['productFit'], $_POST['productGender'], $_POST['productCharacteristics'], $_POST['productColours'], $_POST['productImages'], $_POST['productSizes'], $_POST['productCollection'], $_POST['idCategory']);
+				if (!empty($_POST['productName']) & isset($_POST['productPrice'], $_POST['productMaterial'], $_POST['productFit'], $_POST['productGender'], $_POST['productCharacteristics'], $_POST['productColours'], $_POST['productImages'], $_POST['productSizes'], $_POST['productCollection'])) {
+					createProduct($_POST['productName'], (float)$_POST['productPrice'], $_POST['productMaterial'], $_POST['productFit'], $_POST['productGender'], $_POST['productCharacteristics'], $_POST['productColours'], $_POST['productImages'], $_POST['productSizes'], (int)$_POST['productCollection']);
 				} else {
 					handleError('Completa todos los campos requeridos.');
 				}
 				break;
-			case 'add_to_cart':
-				echo 'producto añadido';
+			default:
+				handleError('Acción no válida.');
 				break;
 		}
-		// } else {
-		// 	handleError('Acceso no autorizado');
-		// }
 	}
 }
 

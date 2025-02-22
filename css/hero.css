@@ -1,0 +1,114 @@
+section.hero {
+    display: flex;
+    flex-direction: column;
+    gap: 3vw;
+
+    section.header {
+        display: flex;
+        flex-direction: column;
+
+        section.title {
+            display: flex;
+            max-width: 100%;
+            gap: 1em;
+
+            h1 {
+                width: fit-content;
+                text-transform: uppercase;
+                font-size: 3rem;
+            }
+
+            h3 {
+                width: fit-content;
+                color: #111;
+                text-transform: uppercase;
+                font-size: 14px;
+                display: flex;
+            }
+        }
+
+        a {
+            text-decoration: none;
+
+            button {
+                border-radius: 32px;
+                background: #F7F7F8;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px 20px;
+                border: none;
+                font-size: 16px;
+                cursor: pointer;
+
+                p {
+                    margin-right: 10px;
+                }
+
+                img {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+
+        p {
+            font-size: 18px;
+            color: #656567;
+        }
+
+        p::first-letter {
+            text-transform: capitalize;
+        }
+    }
+
+    section.news {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        gap: 16px;
+        width: 100%;
+        height: fit-content;
+        align-items: center;
+
+        div.new {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            height: 100%;
+            width: 100%;
+            padding: 30px 40px;
+            border: solid 1px #f1f1f3;
+            border-radius: 14px;
+
+            details > summary {
+                list-style: none;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                cursor: pointer;
+                &::after {
+                    content: url('../images/open-icon.svg');
+                }
+            }
+
+
+            details[open] summary::after {
+                content: url('../images/close-icon.svg');
+                width: 10px;
+                height: 10px;
+            }
+
+            h2 {
+                text-transform: capitalize;
+            }
+
+            p {
+                color: #656567;
+            }
+
+            p::first-letter {
+                text-transform: uppercase;
+            }
+        }
+    }
+}

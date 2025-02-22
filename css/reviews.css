@@ -1,0 +1,30 @@
+section.reviews,
+section.faq {
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
+
+    section.hero {
+        display: flex;
+        flex-direction: column;
+
+        div.header {
+            display: flex;
+            justify-content: space-between;
+
+            div.info {
+                display: flex;
+                gap: 5px;
+
+                div.title {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                div.profile>img {
+                    border-radius: 50%;
+                }
+            }
+        }
+    }
+}

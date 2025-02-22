@@ -1,0 +1,237 @@
+section.cart {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5em;
+
+    
+
+    section.header {
+        font-weight: medium;
+        display: flex;
+        flex-direction: column;
+
+        h1 {
+            font-weight: 600;
+            font-size: 18px;
+            border-bottom: 1px solid #98989a;
+
+            &::first-letter {
+                text-transform: capitalize;
+            }
+        }
+
+        h3 {
+            font-weight: 400;
+            font-size: 13px;
+            color: #1E1E1E;
+
+            &::first-letter {
+                text-transform: capitalize;
+            }
+        }
+    }
+
+    section.main {
+        display: flex;
+        gap: 7em;
+
+        section.products {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            width: 50em;
+
+            article {
+                padding: 9px 10px;
+                display: flex;
+                border-radius: 15px;
+                background: #ffffff;
+                gap: 1em;
+                border: #ffffff;
+                filter: drop-shadow(0px 1px 4px #121010);
+                width: fit-content;
+
+                div.header {
+                    gap: 21px;
+                    padding: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    margin-right: 1em;
+
+                    div.title {
+                        width: 20em;
+                        font-size: 18px;
+            color: #1E1E1E;
+
+                        &:first-letter {
+                            text-transform: capitalize;
+                        }
+                    }
+
+                    h4 {
+                        font-size: 14px;
+                        width: 100%;
+
+                        &:first-letter {
+                            text-transform: capitalize;
+                        }
+                    }
+                }
+
+                figure>img {
+                    border-radius: 8px;
+                    max-width: 80px;
+                }
+
+                figcaption {
+                    gap: 56px;
+                    display: flex;
+                    align-items: center;
+
+                    h3{
+                        width: 60px;
+                        color: #393939;
+                    }
+
+                    input[type="number"] {
+                        width: 4em;
+                        background: transparent;
+                        border: none;
+                        font-size: 1.5em;
+                        text-align: center;
+                    
+                        &::-webkit-inner-spin-button {
+                            filter: invert(1); /* Cambia el color a negro */
+                            cursor: pointer;
+                        }
+                    
+                        &::-webkit-outer-spin-button {
+                            filter: invert(1);
+                            cursor: pointer;
+                        }
+                    }
+                    
+
+                   
+                }
+            }
+        }
+
+        section.aside {
+            padding: 21px 19px;
+            border-radius: 20px;
+            background: #ffd400;
+            height: 600px;
+            align-items: center;
+            display: flex;
+
+            div.main {
+                gap: 8px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                div.header {
+                    display: flex;
+                    gap: 12em;
+
+                    div.title>h2 {
+                        color: #686677;
+                        font-size: 22px;
+
+                        &::first-letter {
+                            text-transform: capitalize;
+                        }
+                    }
+                }
+
+                div.card-type {
+                    display: flex;
+                    gap: 20px;
+                    flex-direction: column;
+
+                    h3 {
+                        color: #686677;
+                        font-size: 22px;
+
+                        &::first-letter {
+                            text-transform: capitalize;
+                        }
+                    }
+
+                    div.cards {
+                        display: flex;
+                        gap: 20px;
+
+                        img {
+                            width: 75px;
+                            height: 55px;
+                        }
+                    }
+                }
+
+                form {
+                    display: flex;
+                    flex-direction: column;
+
+                    input {
+                        background: #CBCAD7;
+                        padding: 18px 11px;
+                        border: none;
+                        border-radius: 8px;
+                    }
+
+                    label {
+                        color: #CBCAD7;
+                    }
+
+                    div.footer-button {
+                        display: flex;
+                        gap: 1em;
+
+                        div.cvv,
+                        div.expiration-date {
+                            display: flex;
+                            flex-direction: column;
+                        }
+                    }
+
+                    div.footer {
+                        display: flex;
+                        flex-direction: column;
+
+                        div {
+                            display: flex;
+                            justify-content: space-between;
+                            color: #686677;
+
+                            h4 {
+                                font-size: 14px;
+                            }
+                        }
+                    }
+
+                    button {
+                        border: none;
+                        border-radius: 12px;
+                        padding: 20px;
+                        background: black;
+                        color: white;
+                        display: flex;
+                        justify-content: space-around;
+
+                        div {
+                            font-size: 16px;
+                        }
+
+                        img {
+                            width: 16px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

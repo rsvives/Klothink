@@ -22,7 +22,7 @@
         }
         ?>
         <section class="product-detail">
-            <form action="../database/products.php" method="post" id="product_detail_form">
+            <form id="product_detail_form">
                 <div class="product">
                     <?php if (!empty($productImagesUrls)): ?>
                         <figure>
@@ -52,15 +52,15 @@
                 <div class="details">
                     <div class="header">
                         <div class="title">
-                            <h2><?= htmlspecialchars($product['name']) ?></h2>
-                            <h3 class="price"><?= htmlspecialchars($product['price']) ?></h3>
+                            <input type="text" id="name" name="name" value="<?= htmlspecialchars($product['name']) ?>" readonly>
+                            <input type="text" id="price" name="price" value="<?= htmlspecialchars($product['price']) ?>" readonly>
                         </div>
                         <div class="buttons">
                             <button class="buy">
                                 <p>Comprar ahora</p>
                                 <img src="../images/buy-white-icon.svg" alt="buy-icon" />
                             </button>
-                            <button type="submit" class="shopping-cart" id="add-product-form">
+                            <button class="shopping-cart" id="add-product-form" onclick="alert('Añadido al carrito')">
                                 <p>Añadir al carrito</p>
                                 <img src=" ../images/shopping-cart.svg" alt="shopping-cart">
                             </button>
@@ -81,7 +81,6 @@
                                 </div>
                                 <div class="fit">
                                     <h3>Fit</h3>
-                                    <!-- <input type="hidden" name="id" value="<?= htmlspecialchars($product['id']); ?>"> -->
                                     <input type="text" name="fit" value="<?= htmlspecialchars($product['fit']); ?>" class="overlay-input" readonly required>
                                     <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                                         <button type="submit">
@@ -94,7 +93,18 @@
                                     <div class="inputs" id="color-picker">
                                         <?php $colours = explode(',', $product['colours']); ?>
                                         <?php foreach ($colours as $colour): ?>
-                                            <input value="<?= htmlspecialchars($colour) ?>" name="color" class="color" type="radio" style="background: <?= htmlspecialchars($colour) ?>;" required>
+                                            <section id="<?= htmlspecialchars($colour) ?>">
+                                                <div class="action-buttons">
+                                                    <form method="post" action="../database/products.php" class="delete-button" onsubmit="confirmDelete(event,<?= htmlspecialchars($product['id']); ?>, '<?= htmlspecialchars($product['name']); ?>')">
+                                                        <input type="hidden" name="action" value="delete_product">
+                                                        <input type="hidden" name="idProduct" value="<?= htmlspecialchars($product['id']); ?>">
+                                                        <button type="submit" class="delete-button">
+                                                            <img src="../images/close-icon.svg" alt="Eliminar">
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                                <input value="<?= htmlspecialchars($colour) ?>" name="colour" class="color" type="radio" style="background: <?= htmlspecialchars($colour) ?>;" required>
+                                            </section>
                                         <?php endforeach; ?>
                                     </div>
                                 </div>
@@ -104,6 +114,17 @@
                                         <?php $sizes = explode(',', $product['sizes']); ?>
                                         <?php foreach ($sizes as $key => $size): ?>
                                             <section id="<?= htmlspecialchars($size) ?>">
+                                                <?php if ($_SESSION['user_role'] === 'Administrador'): ?>
+                                                    <div class="action-buttons">
+                                                        <form method="post" action="../database/products.php" class="delete-button" onsubmit="confirmDelete(event,<?= htmlspecialchars($product['id']); ?>, '<?= htmlspecialchars($product['name']); ?>')">
+                                                            <input type="hidden" name="action" value="delete_product">
+                                                            <input type="hidden" name="idProduct" value="<?= htmlspecialchars($product['id']); ?>">
+                                                            <button type="submit" class="delete-button">
+                                                                <img src="../images/close-icon.svg" alt="Eliminar">
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                <?php endif; ?>
                                                 <input type="radio" id="<?= htmlspecialchars($size) ?>-size" name="size" value="<?= $size ?>" <?= $key == 0 ? 'required' : '' ?>>
                                                 <label for="<?= htmlspecialchars($size) ?>-size"><?= htmlspecialchars($size) ?></label>
                                             </section>
@@ -142,99 +163,6 @@
         <?php require_once '../components/faq.php'; ?>
     </main>
     <?php require_once '../components/footer.php'; ?>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const thumbnails = document.querySelectorAll('.product-thumbnail');
-            const mainImage = document.getElementById('main-product-image');
-
-            thumbnails.forEach(thumbnail => {
-                thumbnail.addEventListener('click', function() {
-                    mainImage.src = this.src;
-                });
-            });
-        });
-
-        let addToCartForm = document.getElementById('product_detail_form')
-
-        addToCartForm.onsubmit = (event) => {
-            event.preventDefault()
-
-            let form = event.target
-            // let product = {}
-            let productForm = new FormData(form)
-            // console.log('añadiendo a carrito', productForm)
-
-            // for (const [clave, valor] of productForm.entries()) {
-            //     product[clave] = valor
-            // }
-            // console.log(product)
-
-            // let product = {
-            //     id: form.id.value,
-            //     size: form.size.value,
-            //     fit:form.fit.value
-            // }
-            let product = {
-                id: productForm.get('id'),
-                fit: productForm.get('fit'),
-                size: productForm.get('size'),
-                color: productForm.get('color'),
-                quantity: 1
-
-            }
-            // console.log(product)
-
-            //TO-DO:
-            //1. sacar el carrito del localstorage (devuelve un string, hay que parsearlo para convertirlo en un array/objeto)
-            let cart = localStorage.getItem('cart') === null ? [] : JSON.parse(localStorage.getItem('cart'))
-
-            //2. añadir el producto al carrito 
-
-
-            let found = false
-            if (cart.length === 0) {
-                cart.push(product)
-            } else {
-                for (let item of cart) {
-                    // console.log(item, product)
-                    if (item.id === product.id && item.fit === product.fit && item.size === product.size && item.color === product.color) {
-                        found = true
-                        item.quantity++
-                    }
-                }
-                if (!found) cart.push(product)
-            }
-
-
-            //más elegante:
-
-            // const foundProduct = cart.find(item => (item.id === product.id && item.fit === product.fit && item.size === product.size && item.color === product.color)) || false
-            // console.log('found', foundProduct)
-            // if (cart.length === 0 || !foundProduct) {
-            //     cart.push(product)
-            // } else {
-            //     cart = cart.map(item => {
-            //         return item.id === product.id &&
-            //             item.fit === product.fit &&
-            //             item.size === product.size &&
-            //             item.color === product.color ? {
-            //                 ...item,
-            //                 quantity: item.quantity + 1
-            //             } : item
-            //     })
-            // }
-
-            console.log(cart)
-
-            //3. volver a convertir todo en string y volver a almacenarlo en el localstorage
-            localStorage.setItem('cart', JSON.stringify(cart))
-
-
-
-
-        }
-    </script>
 
 </body>
 

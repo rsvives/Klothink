@@ -1,0 +1,32 @@
+div.filters {
+    border: 1px solid #f1f1f3;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    width: fit-content;
+    overflow: hidden;
+    scrollbar-width: none;
+    overflow-x: scroll;
+
+    button {
+        border-radius: 100px;
+        padding: 10px;
+        text-transform: uppercase;
+        background: #f7f7f8;
+        border: 1px solid #f1f1f3;
+        font-size: 14px;
+        color: #4c4c4d;
+        margin: auto;
+
+        &.active {
+            background: #ffd400;
+        }
+    }
+
+    &:last-child {
+        display: flex;
+        align-items: flex-end;
+    }
+}

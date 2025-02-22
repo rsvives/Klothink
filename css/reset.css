@@ -1,0 +1,25 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    scrollbar-width: none;
+
+    div.loader {
+        display: none;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        border: 30px solid #ffd400;
+        border-left-color: #262626;
+        animation: loader 1s infinite;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+        margin-top: 15em;
+    }
+}

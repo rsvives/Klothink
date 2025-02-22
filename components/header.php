@@ -12,7 +12,7 @@
                 <li class="dropdown">
                     <div class="title">
                         <a href="#">
-                            <img src="<?= $_SESSION['user_photo'] ?>" alt="Perfil">
+                            <img src="<?= $_SESSION['user_photo'] ?>" alt="Perfil" style="width: 32px;">
                             <p><?= htmlspecialchars($_SESSION['user_alias']) ?></p>
                             <img src="../images/arrow-down.svg" alt="Flecha">
                         </a>
@@ -20,7 +20,7 @@
                     <ul class="dropdown-menu">
                         <li class="profile">
                             <div class="profile-photo">
-                                <img src="<?= htmlspecialchars($_SESSION['user_photo']) ?>" alt="Foto de perfil">
+                                <img src="<?= htmlspecialchars($_SESSION['user_photo']) ?>" alt="Foto de perfil" style="width: 32px;">
                             </div>
                             <h1><?= htmlspecialchars($_SESSION['user_alias']) ?></h1>
                             <h3 class="role"><?= htmlspecialchars($_SESSION['user_role']) ?></h3>

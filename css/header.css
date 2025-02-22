@@ -1,0 +1,97 @@
+header {
+    font-family: 'Manrope';
+    min-width: 100%;
+    width: 100%;
+
+    nav {
+        display: flex;
+        padding: 1em;
+        margin-top: 1em;
+        justify-content: space-between;
+        align-items: center;
+        min-width: 100%;
+        width: 100%;
+        background: #ffffff;
+        border-bottom: 1px solid #f1f1f3;
+
+        ul {
+            display: flex;
+            justify-content: center;
+            gap: 2em;
+            list-style: none;
+            margin-left: 6em;
+
+            li {
+                padding: 14px 20px;
+                text-transform: capitalize;
+                border-radius: 100px;
+                border: 1px solid #f1f1f3;
+
+                a {
+                    text-decoration: none;
+                    color: #656567;
+                    font-size: 18px;
+                }
+
+                &.active {
+                    background: #f7f7f8;
+
+                    a {
+                        color: #262626;
+                    }
+                }
+
+                &.shopping-cart {
+                    padding: 1em;
+                    display: flex;
+                    align-items: center;
+                    background: #ffd400;
+                }
+
+                .profile {
+                    border-radius: 0;
+                }
+
+                .dropdown-menu {
+                    display: flex;
+                    flex-direction: column;
+                    position: absolute;
+                    background: white;
+                    border: 1px solid #CBCAD7;
+                    width: 15em;
+                    z-index: 1000;
+                    display: none;
+
+                    li.item {
+                        border: none;
+                        padding: 24px 8px;
+
+                        ul.dropdown-inner-menu {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: flex-start;
+                            margin: 0;
+                            border: none;
+                        }
+                    }
+                }
+
+
+                a {
+                    width: fit-content;
+                    text-decoration: none;
+                    color: black;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+
+                    .profile-photo>img {
+                        border-radius: 50%;
+                        width: 40px;
+                        height: 40px;
+                    }
+                }
+            }
+        }
+    }
+}

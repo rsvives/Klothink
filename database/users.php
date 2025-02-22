@@ -1,10 +1,11 @@
 <?php
 require_once '../database/db.php';
 require_once '../database/functions.php';
+
 /**
  * Registra un nuevo usuario en la base de datos.
  */
-function registerUser($alias, $email, $password)
+function registerUser($alias, $email, $password, $image = null)
 {
     $conn = connectDatabase() or handleError("No se pudo conectar a la base de datos.");
 
@@ -34,16 +35,40 @@ function registerUser($alias, $email, $password)
         }
     }
 
+    // Subir la imagen si se proporciona
+    if ($image) {
+        // Definir el directorio para guardar la imagen
+        $uploadDir = __DIR__ . '/../local_storage/profile_pics/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true); // Crear el directorio si no existe
+        }
+
+        // Generar un nombre único para la imagen
+        $imagePath = $uploadDir . time() . '_' . basename($image['name']);
+
+        // Mover el archivo subido a la carpeta local
+        if (!move_uploaded_file($image['tmp_name'], $imagePath)) {
+            handleError("Error al subir la imagen.");
+        }
+    } else {
+        $imagePath = null; // No se sube ninguna imagen, asigna null
+    }
+
     $stmtCheck->close();
     $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $stmtInsert = $conn->prepare("INSERT INTO user (alias, email, password) VALUES (?, ?, ?)");
+    $stmtInsert = $conn->prepare("INSERT INTO user (alias, email, password, image) VALUES (?, ?, ?, ?)");
     if (!$stmtInsert) {
         handleError("Error al preparar la inserción de usuario.");
     }
-    $stmtInsert->bind_param("sss", $alias, $email, $encryptedPassword);
+    $stmtInsert->bind_param("ssss", $alias, $email, $encryptedPassword, $imagePath);
 
     if ($stmtInsert->execute()) {
-        loginUser($alias, $password);
+        // Después de insertar, actualizamos la sesión con la imagen
+        $_SESSION['user_alias'] = $alias;
+        $_SESSION['user_role'] = getUserRole($alias);
+        $_SESSION['user_photo'] = $imagePath;  // Guardamos la imagen en la sesión
+        header("Location: ../views/index.php");
+        die();
     } else {
         handleError("Error al registrar el usuario: " . $stmtInsert->error);
     }
@@ -75,7 +100,6 @@ function getUserRole($alias)
     return $role;
 }
 
-
 /**
  * Inicia sesión de un usuario utilizando su alias y contraseña.
  */
@@ -87,19 +111,20 @@ function loginUser($alias, $password)
         handleError("No se pudo conectar a la base de datos.");
     }
 
-    $stmtCheck = $conn->prepare("SELECT password FROM user WHERE alias = ?");
+    $stmtCheck = $conn->prepare("SELECT password, image FROM user WHERE alias = ?");
     if (!$stmtCheck) {
         handleError("Error al preparar la consulta de inicio de sesión.");
     }
     $stmtCheck->bind_param("s", $alias);
     $stmtCheck->execute();
-    $stmtCheck->bind_result($hashedPassword);
+    $stmtCheck->bind_result($hashedPassword, $image);
 
     if ($stmtCheck->fetch() && password_verify($password, $hashedPassword)) {
         session_name('Klothink');
         session_start();
         $_SESSION['user_alias'] = $alias;
         $_SESSION['user_role'] = getUserRole($alias);
+        $_SESSION['user_photo'] = $image;  // Al iniciar sesión, guardamos la imagen en la sesión
         header("Location: ../views/index.php");
         die();
     } else {
@@ -110,52 +135,6 @@ function loginUser($alias, $password)
     $conn->close();
 }
 
-
-/**
- * Obtiene todos los usuarios de la base de datos.
- */
-function getUsers()
-{
-    $conn = connectDatabase();
-    if (!$conn) {
-        handleError("No se pudo conectar a la base de datos.");
-    }
-
-    $query = "SELECT * FROM user";
-    $users = $conn->query($query);
-
-    if (!$users) {
-        handleError("No se pudieron obtener los usuarios.");
-    }
-
-    return $users;
-}
-
-/**
- * Actualiza el rol de un usuario en la base de datos.
- */
-function updateUsers($id, $role)
-{
-    $connection = connectDatabase();
-    if (!$connection) {
-        handleError("No se pudo conectar a la base de datos.");
-    }
-
-    $query = "UPDATE user SET role = ? WHERE id = ?";
-    $stmt = $connection->prepare($query);
-    if (!$stmt) {
-        handleError("No se pudo preparar la consulta para actualizar el usuario.");
-    }
-
-    $stmt->bind_param("si", $role, $id);
-    if (!$stmt->execute()) {
-        handleError("No se pudo actualizar el rol del usuario.");
-    }
-
-    $stmt->close();
-    $connection->close();
-    return true;
-}
 /**
  * Obtiene la foto de perfil de un usuario y la guarda en la sesión.
  *
@@ -164,7 +143,6 @@ function updateUsers($id, $role)
  */
 function getProfileImageUser($alias)
 {
-
     $conn = connectDatabase();
 
     if ($stmt = $conn->prepare("SELECT image FROM user WHERE alias = ?")) {
@@ -193,7 +171,9 @@ function actions()
         switch ($action) {
             case 'register':
                 if (!empty($_POST['name']) && !empty($_POST['email']) && !empty($_POST['password'])) {
-                    registerUser($_POST['name'], $_POST['email'], $_POST['password']);
+                    // Pasamos también el archivo de imagen si está presente
+                    $image = $_FILES['profile_picture'] ?? null;
+                    registerUser($_POST['name'], $_POST['email'], $_POST['password'], $image);
                 } else {
                     handleError("Por favor, completa todos los campos para el registro.");
                 }

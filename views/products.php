@@ -57,16 +57,30 @@
                                         <button class="close-form" onclick="closePopup()">X</button>
                                         <form action="../database/products.php" method="post">
                                             <input type="hidden" name="action" value="create_product">
-                                            <input type="text" id="productName" placeholder="Nombre del Producto" />
-                                            <input type="text" id="productPrice" placeholder="Precio del Producto" />
-                                            <input type="text" id="productMaterial" placeholder="Material del Producto" />
-                                            <input type="text" id="productFit" placeholder="Ajuste del Producto" />
-                                            <input type="text" id="productGender" placeholder="Género del Producto" />
-                                            <input type="text" id="productCharacteristics" placeholder="Características del Producto" />
-                                            <input type="text" id="productColours" placeholder="Colores del Producto" />
-                                            <input type="text" id="productImages" placeholder="Imágenes del Producto" />
-                                            <input type="text" id="productSizes" placeholder="Tamaños del Producto" />
-                                            <input type="text" id="productCollection" placeholder="Colección del Producto" />
+                                            <input type="text" name="productName" placeholder="Nombre del Producto" required />
+                                            <input type="number" step="0.01" name="productPrice" placeholder="Precio del Producto" />
+                                            <input type="text" name="productMaterial" placeholder="Material del Producto" required />
+                                            <input type="text" name="productFit" placeholder="Ajuste del Producto" required />
+
+                                            <input type="text" name="productGender" placeholder="Género del Producto" list="genderList" required />
+                                            <datalist id="genderList">
+                                                <option value="Men">
+                                                <option value="Unisex">
+                                                <option value="Women">
+                                            </datalist>
+
+                                            <input type="text" name="productCharacteristics" placeholder="Características del Producto" required />
+                                            <input type="text" name="productColours" placeholder="Colores del Producto" required />
+                                            <input type="text" name="productImages" placeholder="Imágenes del Producto" />
+                                            <input type="text" name="productSizes" placeholder="Tamaños del Producto" required />
+
+                                            <input type="text" name="productCollection" placeholder="Colección del Producto" list="collectionList" required />
+                                            <datalist id="collectionList">
+                                                <option value="1 - Casual">
+                                                <option value="2 - Formal">
+                                                <option value="3 - Sport">
+                                            </datalist>
+
                                             <button class="submit-button">Agregar Producto</button>
                                         </form>
                                     </div>
