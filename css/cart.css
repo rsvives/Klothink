@@ -1,3 +1,4 @@
+
 section.cart {
     display: flex;
     flex-direction: column;
@@ -49,25 +50,33 @@ section.cart {
                 background: #ffffff;
                 gap: 1em;
                 border: #ffffff;
-                filter: drop-shadow(0px 1px 4px #121010);
+                box-shadow: 0px 1px 4px #121010; 
                 width: fit-content;
 
                 div.header {
                     gap: 21px;
                     padding: 20px;
                     display: flex;
+                    width: 230px;
                     flex-direction: column;
                     margin-right: 1em;
 
-                    div.title {
+                    div {
                         width: 20em;
+                        font-weight: bold;
                         font-size: 18px;
-            color: #1E1E1E;
+                        color: #1E1E1E;
 
                         &:first-letter {
                             text-transform: capitalize;
                         }
+                        &.fit{
+                            font-weight: 500;
+                            font-size: 14px;
+
+                        }
                     }
+                    
 
                     h4 {
                         font-size: 14px;
@@ -79,7 +88,7 @@ section.cart {
                     }
                 }
 
-                figure>img {
+                figure > img {
                     border-radius: 8px;
                     max-width: 80px;
                 }
@@ -90,7 +99,7 @@ section.cart {
                     align-items: center;
 
                     h3{
-                        width: 60px;
+                        width: 100px;
                         color: #393939;
                     }
 
@@ -100,16 +109,12 @@ section.cart {
                         border: none;
                         font-size: 1.5em;
                         text-align: center;
+                        color: black;
+                    }
                     
-                        &::-webkit-inner-spin-button {
-                            filter: invert(1); /* Cambia el color a negro */
-                            cursor: pointer;
-                        }
+                
                     
-                        &::-webkit-outer-spin-button {
-                            filter: invert(1);
-                            cursor: pointer;
-                        }
+        
                     }
                     
 
@@ -137,7 +142,7 @@ section.cart {
                     display: flex;
                     gap: 12em;
 
-                    div.title>h2 {
+                    div.title > h2 {
                         color: #686677;
                         font-size: 22px;
 
@@ -234,4 +239,4 @@ section.cart {
             }
         }
     }
-}
+

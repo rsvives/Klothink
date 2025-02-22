@@ -105,8 +105,8 @@
                                                         </form>
                                                     </div>
                                                 <?php endif; ?>
-                                                <input type="radio" id="color_<?= $colour ?>" name="colour" class="color-radio" value="<?= htmlspecialchars($colour) ?>">
-                                                <label for="color_<?= $colour ?>" class="color-label" style="background: <?= htmlspecialchars($colour) ?>;"></label>
+                                                <input type="radio" id="color-<?= $colour ?>" name="colour" class="color-radio" value="<?= htmlspecialchars($colour) ?> " required>
+                                                <label for="color-<?= $colour ?>" class="color-label" style="background: <?= htmlspecialchars($colour) ?>;"></label>
                                             </section>
                                         <?php endforeach; ?>
                                     </div>

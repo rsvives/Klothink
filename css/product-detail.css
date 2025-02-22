@@ -146,8 +146,8 @@ section.product-detail {
 
                             div.inputs {
                                 border: 1px solid #f1f1f3;
-                                width: fit-content;
-                                height: 44px;
+                                width: 40px;
+                                height: 40px;
                                 display: flex;
                                 gap: 4px;
                                 flex-wrap: wrap;
@@ -156,10 +156,8 @@ section.product-detail {
 
                                 section {
                                     display: flex;
-                                    flex-direction: column;
-                                    max-width: 100%;
                                     position: relative;
-                                    margin-bottom: 2em;
+                                    align-items: center;
                                     div.action-buttons {
                                         position: absolute;
                                         top: 1px;
@@ -169,7 +167,7 @@ section.product-detail {
                                         z-index: 10;
                         
                                         form > button.delete-button {
-                                            background-color: #D1D1D6;
+                                            background: #D1D1D6;
                                             color: white;
                                             border-radius: 50%;
                                             padding: 5px;
@@ -181,20 +179,24 @@ section.product-detail {
                                             justify-content: center;
                                             align-items: center;
                                             cursor: pointer;
-                                            transition: background-color 0.2s ease, transform 0.1s ease;
+                                            transition: background 0.2s ease, transform 0.1s ease;
                                             img{
                                                 width: 10px;
                                             }
                                         }
                                     }
-                                    input {
-                                        border-radius: 100%;
-                                        width: 24px;
-                                        appearance: none;
-    
-                                        &:checked {
-                                            background: white;
-                                            border: 1px solid black;
+                                    input[type="radio"] {
+                                        display: none;
+                                    }
+
+                                    input[type="radio"] + label {
+                                        width: 20px;
+                                        height: 20px;
+                                        border-radius: 50%;
+                                        cursor: pointer;
+                                        transition: background 0.3s ease;
+                                        &:checked{
+                                            border: 1em solid black;
                                         }
                                     }
                                 }
@@ -249,7 +251,7 @@ section.product-detail {
                                         z-index: 10;
                         
                                         form>button.delete-button {
-                                            background-color: #D1D1D6;
+                                            background: #D1D1D6;
                                             color: white;
                                             border-radius: 50%;
                                             padding: 5px;
@@ -261,7 +263,7 @@ section.product-detail {
                                             justify-content: center;
                                             align-items: center;
                                             cursor: pointer;
-                                            transition: background-color 0.2s ease, transform 0.1s ease;
+                                            transition: background 0.2s ease, transform 0.1s ease;
                                             img{
                                                 width: 10px;
                                             }
@@ -281,9 +283,8 @@ section.product-detail {
 
                                     input {
                                         display: none;
-
                                         &:checked+label {
-                                            background-color: #000;
+                                            background: #000;
                                             color: #fff;
                                         }
                                     }
