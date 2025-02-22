@@ -94,16 +94,18 @@
                                         <?php $colours = explode(',', $product['colours']); ?>
                                         <?php foreach ($colours as $colour): ?>
                                             <section id="<?= htmlspecialchars($colour) ?>">
-                                                <div class="action-buttons">
-                                                    <form method="post" action="../database/products.php" class="delete-button" onsubmit="confirmDelete(event,<?= htmlspecialchars($product['id']); ?>, '<?= htmlspecialchars($product['name']); ?>')">
-                                                        <input type="hidden" name="action" value="delete_product">
-                                                        <input type="hidden" name="idProduct" value="<?= htmlspecialchars($product['id']); ?>">
-                                                        <button type="submit" class="delete-button">
-                                                            <img src="../images/close-icon.svg" alt="Eliminar">
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                                <input value="<?= htmlspecialchars($colour) ?>" name="colour" class="color" type="radio" style="background: <?= htmlspecialchars($colour) ?>;" required>
+                                                <?php if ($_SESSION['user_role'] === 'Administrador') : ?>
+                                                    <div class="action-buttons">
+                                                        <form method="post" action="../database/products.php" class="delete-button" onsubmit="confirmDelete(event,<?= htmlspecialchars($product['id']); ?>, '<?= htmlspecialchars($product['name']); ?>')">
+                                                            <input type="hidden" name="action" value="delete_product">
+                                                            <input type="hidden" name="idProduct" value="<?= htmlspecialchars($product['id']); ?>">
+                                                            <button type="submit" class="delete-button">
+                                                                <img src="../images/close-icon.svg" alt="Eliminar">
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                <?php endif; ?>
+                                                <input value="<?= htmlspecialchars($colour) ?>" name="colour" class="color" type="radio" style="background: <?= htmlspecialchars($colour) ?>;">
                                             </section>
                                         <?php endforeach; ?>
                                     </div>
