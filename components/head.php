@@ -56,6 +56,7 @@
 		handleError('No se pudo establecer conexión con la base de datos. Por favor, inténtalo más tarde.');
 	}
 	?>
+
 </head>
 
 <script>

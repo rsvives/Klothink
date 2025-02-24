@@ -5,7 +5,7 @@ section.cart {
     justify-content: center;
     gap: 5em;
 
-    
+
 
     section.header {
         font-weight: medium;
@@ -35,7 +35,7 @@ section.cart {
 
     section.main {
         display: flex;
-        gap: 7em;
+        justify-content: space-between;
 
         section.products {
             display: flex;
@@ -50,7 +50,7 @@ section.cart {
                 background: #ffffff;
                 gap: 1em;
                 border: #ffffff;
-                box-shadow: 0px 1px 4px #121010; 
+                box-shadow: 0px 1px 4px #121010;
                 width: fit-content;
 
                 div.header {
@@ -76,7 +76,7 @@ section.cart {
 
                         }
                     }
-                    
+
 
                     h4 {
                         font-size: 14px;
@@ -111,14 +111,14 @@ section.cart {
                         text-align: center;
                         color: black;
                     }
-                    
-                
-                    
-        
-                    }
-                    
 
-                   
+
+
+
+                    }
+
+
+
                 }
             }
         }

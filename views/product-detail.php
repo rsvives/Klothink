@@ -31,16 +31,6 @@
                         <div class="images">
                             <?php foreach ($productImagesUrls as $imageUrl): ?>
                                 <figure>
-                                    <!-- <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
-                                        <div class="action-buttons">
-                                            <form method="post" action="../database/edit-product.php" class="delete-button" onsubmit="return confirmDelete(<?= htmlspecialchars($product['id']); ?>, '<?= htmlspecialchars($product['name']); ?>')">
-                                                <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['id']); ?>">
-                                                <button type="submit" class="delete-button" title="Eliminar imagen">
-                                                    <img src="../images/Minus.png" alt="Eliminar imagen">
-                                                </button>
-                                            </form>
-                                        </div>
-                                    <?php endif; ?> -->
                                     <img class="product-thumbnail" src="<?= htmlspecialchars($imageUrl); ?>" alt="Imagen del producto">
                                 </figure>
                             <?php endforeach; ?>
@@ -71,22 +61,11 @@
                             <div class="header">
                                 <div class="matherial">
                                     <h3>Material</h3>
-                                    <input type="hidden" name="id" value="<?= htmlspecialchars($product['id']); ?>">
                                     <input type="text" name="material" value="<?= htmlspecialchars($product['material']); ?>" class="overlay-input" readonly required>
-                                    <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
-                                        <button type="submit">
-                                            <img src="../images/pen-solid.svg" alt="Editar Material">
-                                        </button>
-                                    <?php endif; ?>
                                 </div>
                                 <div class="fit">
                                     <h3>Fit</h3>
                                     <input type="text" name="fit" value="<?= htmlspecialchars($product['fit']); ?>" class="overlay-input" readonly required>
-                                    <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
-                                        <button type="submit">
-                                            <img src="../images/pen-solid.svg" alt="Editar Fit">
-                                        </button>
-                                    <?php endif; ?>
                                 </div>
                                 <div class="colour">
                                     <h3>Color</h3>
@@ -97,7 +76,7 @@
                                                 <?php if ($_SESSION['user_role'] === 'Administrador') : ?>
                                                     <div class="action-buttons">
                                                         <form method="post" action="../database/products.php" class="delete-button" onsubmit="confirmDelete(event,<?= htmlspecialchars($product['id']); ?>, '<?= htmlspecialchars($product['name']); ?>')">
-                                                            <input type="hidden" name="action" value="delete_product">
+                                                            <input type="hidden" name="action" value="delete_product_with_id">
                                                             <input type="hidden" name="idProduct" value="<?= htmlspecialchars($product['id']); ?>">
                                                             <button type="submit" class="delete-button">
                                                                 <img src="../images/close-icon.svg" alt="Eliminar">
@@ -119,9 +98,11 @@
                                             <section id="<?= htmlspecialchars($size) ?>">
                                                 <?php if ($_SESSION['user_role'] === 'Administrador'): ?>
                                                     <div class="action-buttons">
-                                                        <form method="post" action="../database/products.php" class="delete-button" onsubmit="confirmDelete(event,<?= htmlspecialchars($product['id']); ?>, '<?= htmlspecialchars($product['name']); ?>')">
-                                                            <input type="hidden" name="action" value="delete_product">
+                                                        <form method="post" action="../database/products.php" class="delete-button" onsubmit="confirmDeleteAtribute(event,<?= htmlspecialchars($product['id']); ?>, 'sizes')">
+                                                            <input type="hidden" name="action" value="delete_product_attribute">
                                                             <input type="hidden" name="idProduct" value="<?= htmlspecialchars($product['id']); ?>">
+                                                            <input type="hidden" name="attribute" value="sizes">
+                                                            <input type="hidden" name="value" value="<?= htmlspecialchars($size) ?>">
                                                             <button type="submit" class="delete-button">
                                                                 <img src="../images/close-icon.svg" alt="Eliminar">
                                                             </button>
@@ -142,7 +123,7 @@
                             <ul>
                                 <?php foreach ($shopping_information as $information): ?>
                                     <li>
-                                        <input type="text" name="shopping_information" value="<?= htmlspecialchars($information); ?>" class="overlay-input" readonly required>
+                                        <input type="text" name="shopping_information" value="<?= htmlspecialchars($information) ?? 'Información no disponible'; ?>" class="overlay-input" readonly required>
                                     </li>
                                 <?php endforeach; ?>
                             </ul>

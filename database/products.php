@@ -7,8 +7,7 @@ require_once '../database/functions.php';
  *
  * @return mysqli_result|false Los productos de la base de datos o false si ocurre un error.
  */
-function getProducts()
-{
+function getProducts() {
 	try {
 		$conn = connectDatabase();
 		if (!$conn) {
@@ -17,7 +16,13 @@ function getProducts()
 		}
 
 		$query = "SELECT * FROM product";
-		return $conn->query($query);
+		$result = $conn->query($query);
+		if (!$result) {
+			handleError('Error al ejecutar la consulta.');
+			return false;
+		}
+
+		return $result;
 	} catch (Exception $e) {
 		handleError('Error inesperado: ' . $e->getMessage());
 		return false;
@@ -25,17 +30,20 @@ function getProducts()
 }
 
 /**
- * Obtiene un producto desde la base de datos por su 'id'.
+ * Obtiene un producto desde la base de datos por su ID.
  *
  * @param int $id El ID del producto a obtener.
  * @return array|null Un arreglo con los datos del producto o null si ocurre un error.
  */
-function getProductById($id)
-{
+function getProductById($id) {
 	try {
 		$conn = connectDatabase();
-		$query = 'SELECT * FROM product WHERE id = ?';
+		if (!$conn) {
+			handleError('No se pudo conectar a la base de datos.');
+			return null;
+		}
 
+		$query = 'SELECT * FROM product WHERE id = ?';
 		$stmt = $conn->prepare($query);
 		if (!$stmt) {
 			handleError('Error al preparar la consulta.');
@@ -62,8 +70,7 @@ function getProductById($id)
  *
  * @param int $id El ID del producto que se desea eliminar.
  */
-function deleteProductById($id)
-{
+function deleteProductById($id) {
 	try {
 		$conn = connectDatabase();
 		if (!$conn) {
@@ -86,7 +93,6 @@ function deleteProductById($id)
 		$stmt->close();
 		$conn->close();
 
-		header("Location: ../views/products.php");
 		exit();
 	} catch (Exception $e) {
 		handleError('Error inesperado: ' . $e->getMessage());
@@ -96,8 +102,7 @@ function deleteProductById($id)
 /**
  * Añade un producto a la base de datos.
  */
-function createProduct($name, $price, $material, $fit, $gender, $characteristics, $colours, $images, $sizes, $idCollection)
-{
+function createProduct($name, $price, $material, $fit, $gender, $characteristics, $colours, $images, $sizes, $idCollection) {
 	try {
 		$conn = connectDatabase();
 		if (!$conn) {
@@ -105,7 +110,7 @@ function createProduct($name, $price, $material, $fit, $gender, $characteristics
 			return;
 		}
 
-		$query = "INSERT INTO product (name, characteristics, colours, fit, gender, idCollection, images, material, price, sizes) 
+		$query = "INSERT INTO product (name, characteristics, colours, fit, gender, idCollection, images, material, price, sizes)
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$stmt = $conn->prepare($query);
 
@@ -122,8 +127,6 @@ function createProduct($name, $price, $material, $fit, $gender, $characteristics
 
 		$stmt->close();
 		$conn->close();
-
-		header("Location: ../views/products.php");
 		exit();
 	} catch (Exception $e) {
 		handleError('Error inesperado: ' . $e->getMessage());
@@ -131,42 +134,75 @@ function createProduct($name, $price, $material, $fit, $gender, $characteristics
 }
 
 /**
- * Obtiene el ID del usuario por su alias.
+ * Elimina un atributo específico de un producto en la base de datos.
  *
- * @param string $alias El alias del usuario.
- * @return int|null El ID del usuario o null si no se encuentra.
+ * @param int $id ID del producto.
+ * @param string $attribute Nombre del atributo a eliminar (se establecerá como NULL o se actualizará).
+ * @param string|null $value (Opcional) Valor específico a eliminar dentro del atributo.
  */
-function getUserIdByAlias($alias)
-{
-	try {
-		$conn = connectDatabase();
-		$query = "SELECT id FROM user WHERE alias = ?";
-		$stmt = $conn->prepare($query);
+function deleteProductAttribute($productId, $attributeName, $valueToDelete) {
+	$connection = connectDatabase();
+	if (!$connection) {
+		handleError('No se pudo conectar a la base de datos');
+		exit();
+	}
 
-		if (!$stmt) {
-			handleError('Error al preparar la consulta.');
-			return null;
+	$query = "SELECT * FROM product WHERE id = ?";
+	$statement = $connection->prepare($query);
+	if (!$statement) {
+		handleError('Error al preparar la consulta');
+		exit();
+	}
+	$statement->bind_param('i', $productId);
+	$statement->execute();
+	$result = $statement->get_result();
+	$product = $result->fetch_assoc();
+	$statement->close();
+
+	if (!$product) {
+		handleError('Producto no encontrado');
+		exit();
+	}
+
+	if (!array_key_exists($attributeName, $product)) {
+		handleError('El atributo no existe');
+		exit();
+	}
+
+	if ($attributeName === 'sizes') {
+		$sizes = explode(',', $product['sizes']);
+		$updatedSizes = array_filter($sizes, function ($size) use ($valueToDelete) {
+			return trim($size) !== $valueToDelete;
+		});
+		$newSizes = implode(',', $updatedSizes);
+
+		if (empty($newSizes)) {
+			$newSizes = null;
 		}
 
-		$stmt->bind_param('s', $alias);
-		$stmt->execute();
-		$result = $stmt->get_result();
-		$user = $result->fetch_assoc();
-
-		$stmt->close();
-		$conn->close();
-
-		return $user['id'] ?? null;
-	} catch (Exception $e) {
-		return null;
+		$updateQuery = "UPDATE product SET sizes = ? WHERE id = ?";
+		$updateStatement = $connection->prepare($updateQuery);
+		if (!$updateStatement) {
+			handleError('Error al preparar la consulta de actualización');
+			exit();
+		}
+		$updateStatement->bind_param('si', $newSizes, $productId);
+		if (!$updateStatement->execute()) {
+			handleError('No se pudo eliminar el valor del atributo');
+			exit();
+		}
+		header("Location: ../views/products.php");
+		$updateStatement->close();
 	}
+
+	$connection->close();
+	exit();
 }
 
 /**
  * Procesa las acciones relacionadas con productos.
  */
-function actions()
-{
+function actions() {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$action = $_POST['action'] ?? '';
 
@@ -180,12 +216,21 @@ function actions()
 				break;
 
 			case 'create_product':
-				if (!empty($_POST['productName']) & isset($_POST['productPrice'], $_POST['productMaterial'], $_POST['productFit'], $_POST['productGender'], $_POST['productCharacteristics'], $_POST['productColours'], $_POST['productImages'], $_POST['productSizes'], $_POST['productCollection'])) {
+				if (!empty($_POST['productName']) && isset($_POST['productPrice'], $_POST['productMaterial'], $_POST['productFit'], $_POST['productGender'], $_POST['productCharacteristics'], $_POST['productColours'], $_POST['productImages'], $_POST['productSizes'], $_POST['productCollection'])) {
 					createProduct($_POST['productName'], (float)$_POST['productPrice'], $_POST['productMaterial'], $_POST['productFit'], $_POST['productGender'], $_POST['productCharacteristics'], $_POST['productColours'], $_POST['productImages'], $_POST['productSizes'], (int)$_POST['productCollection']);
 				} else {
 					handleError('Completa todos los campos requeridos.');
 				}
 				break;
+
+			case 'delete_product_attribute':
+				if (!empty($_POST['attribute']) && isset($_POST['idProduct'])) {
+					deleteProductAttribute((int)$_POST['idProduct'], $_POST['attribute'], $_POST['value']);
+				} else {
+					handleError('Faltan parámetros para eliminar el atributo.');
+				}
+				break;
+
 			default:
 				handleError('Acción no válida.');
 				break;
