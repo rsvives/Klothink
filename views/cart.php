@@ -33,7 +33,8 @@
 				<section class="aside">
 					<div class="main">
 						<h2>Detalles de la tarjeta</h2>
-						<form action="process_payment.php" method="POST">
+						<form id="payment_form" action="process_payment.php" method="POST">
+							<input type="hidden" name="cart" value="">
 							<label for="cardName">Nombre de la tarjeta</label>
 							<input type="text" id="cardName" name="cardName" placeholder="Nombre" required>
 							<label for="cardNumber">Número de la tarjeta</label>
@@ -68,6 +69,18 @@
 			</section>
 		</section>
 	</main>
+
+	<script>
+		let form = document.getElementById('payment_form')
+
+		form.addEventListener('submit', (ev) => {
+			ev.preventDefault()
+			ev.target.cart.value = localStorage.getItem('cart')
+
+			ev.target.submit()
+
+		})
+	</script>
 
 
 </body>
